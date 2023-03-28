@@ -20,6 +20,9 @@ public:
     
     virtual void update_scene() = 0;
 
+    std::vector<float> interpolate(int indep_st, int indep_end,
+                                   int dep_st, int dep_end) const;
+
     void draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color);
 
     void draw_scene() const;
