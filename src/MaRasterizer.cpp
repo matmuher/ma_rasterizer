@@ -180,7 +180,7 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
         info() << "P1 - P2: " <<  y_walker << '\n';
 
         int x1 = int(x12[y_walker - P1.y]);
-        int x2 = int(x01[y_walker - P0.y]);
+        int x2 = int(x02[y_walker - P0.y]);
 
         info() << "xs: " << x1 << ' ' << x2 << '\n';
 
