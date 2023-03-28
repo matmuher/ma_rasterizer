@@ -24,8 +24,9 @@ public:
                                    int dep_st, int dep_end) const;
 
     void draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color);
+    void draw_triangle(sf::Vector2i P0, sf::Vector2i P1, sf::Vector2i P2, sf::Color color);
 
-    void draw_scene() const;
+    void show_scene() const;
 
     void save_scene() const;
 };

@@ -8,14 +8,8 @@ public:
 
     virtual void update_scene()
     {
-        draw_line(sf::Vector2i{20, 20}, sf::Vector2i{0, 90}, sf::Color::Red);
-
-        // this is not drawn
-        draw_line(sf::Vector2i{90, 70}, sf::Vector2i{0, 0}, sf::Color::Green);
-
-        draw_line(sf::Vector2i{0, 0}, sf::Vector2i{70, 90}, sf::Color::Cyan);
-
-        draw_line(sf::Vector2i{0, 0}, sf::Vector2i{90, 10}, sf::Color::Blue);
+        sf::Vector2i P0{10, 10}, P1{70, 50}, P2{35, 80};
+        draw_triangle(P0, P1, P2, sf::Color::Cyan);
     }
 };
 

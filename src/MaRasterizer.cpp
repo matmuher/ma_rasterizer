@@ -110,7 +110,15 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
     }
 }
 
-void MaRasterizer::draw_scene() const
+void MaRasterizer::draw_triangle(sf::Vector2i P0, sf::Vector2i P1,
+                                 sf::Vector2i P2, sf::Color color)
+{
+    draw_line(P0, P1, color);
+    draw_line(P1, P2, color);
+    draw_line(P2, P0, color);
+}
+
+void MaRasterizer::show_scene() const
 {
     sf::Texture texture;
     texture.loadFromImage(image);
