@@ -1,17 +1,15 @@
 #include <MaRasterizer.hpp>
+#include <Debug.hpp>
 
-MaRasterizer::MaRasterizer(int Width, int Height)
+MaRasterizer::MaRasterizer(int Width, int Height, bool window_mode)
     :
         m_Width{Width},
-        m_Height{Height},
-        window{sf::VideoMode(m_Width, m_Height), "ma_rasterizer"}
+        m_Height{Height}
 {
     image.create(m_Width, m_Height, sf::Color::White);
-}
 
-void MaRasterizer::update_scene()
-{
-    draw_line(sf::Vector2i{0, 0}, sf::Vector2i{10, 90}, sf::Color::Red);
+    if (window_mode)
+        window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
 }
 
 void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
@@ -19,8 +17,8 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
     float slope = float(P1.y - P0.y) / (P1.x - P0.x);
     float y = P0.y;
 
-    info() << P0 << ' ' << P1 << '\n';
-    info() << "slope: " << slope << '\n';
+        info() << P0 << ' ' << P1 << '\n';
+        info() << "slope: " << slope << '\n';
 
     for (int x = P0.x; x < P1.x; ++x)
     {
@@ -28,7 +26,7 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
         image.setPixel(x, y, color);
     }
 
-    info() << y << '\n';
+        info() << y << "\n\n";
 }
 
 void MaRasterizer::draw_scene() const
@@ -57,14 +55,4 @@ void MaRasterizer::draw_scene() const
 void MaRasterizer::save_scene() const
 {
     image.saveToFile(file_name);
-}
-
-std::ostream& operator<< (std::ostream& cout, sf::Vector2i P)
-{
-    return cout << '(' << P.x << ',' << P.y << ')';
-}
-
-std::ostream& info()
-{
-    return std::cout << "[info] ";
 }
