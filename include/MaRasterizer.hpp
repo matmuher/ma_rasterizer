@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <array>
+#include <SFML/Graphics.hpp>
+#include <Model.hpp>
 
 class MaRasterizer
 {
@@ -45,6 +46,8 @@ public:
                         sf::Vector2i P1, float h1,
                         sf::Vector2i P2, float h2,
                         sf::Color color);
+
+    void draw_model(const Model& model);
 
 // [CONVERTION]
 

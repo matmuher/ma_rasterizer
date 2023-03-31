@@ -234,6 +234,17 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
     }
 }
 
+void MaRasterizer::draw_model(const Model& model)
+{
+    for (const auto& triangle : model.triangles)
+    {
+        draw_triangle(  ProjectOnPixel(model.vertices[triangle.a]),
+                        ProjectOnPixel(model.vertices[triangle.b]),
+                        ProjectOnPixel(model.vertices[triangle.c]),
+                        triangle.clr);
+    }
+}
+
 // [SCENE MANAGING]
 
 void MaRasterizer::show_scene() const
