@@ -56,6 +56,7 @@ sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt) const;
 
 inline float project_component(float component, float z) const;
 sf::Vector2f ProjectOnViewPort(const sf::Vector3f& pnt) const;
+sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
 
 // [SCENE MANAGING]
 

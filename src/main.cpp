@@ -1,5 +1,6 @@
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
+#include <vector>
 
 class TestRasterizer : public MaRasterizer
 {
@@ -9,36 +10,38 @@ public:
 
     virtual void update_scene()
     {
-        sf::Vector2i P0{81, 9}, P1{9, 9}, P2{45, 81};
-        sf::Vector2f P0f{-0.5, 0.5}, P1f{0.5, 0.5}, P2f{0, -0.5};
-        sf::Vector3f P0f3{0, 0, -1}, P1f3{0, 0.5, -1}, P2f3{0.5, 0, -1};
+        sf::Vector3f 
+            vAf = {-2, -0.5, 5},
+            vBf = {-2,  0.5, 5},
+            vCf = {-1,  0.5, 5},
+            vDf = {-1, -0.5, 5},
 
-        P0f = ProjectOnViewPort(P0f3);
-        P1f = ProjectOnViewPort(P1f3);
-        P2f = ProjectOnViewPort(P2f3);
+            // The four "back" vertices
+            vAb = {-2, -0.5, 6},
+            vBb = {-2,  0.5, 6},
+            vCb = {-1,  0.5, 6},
+            vDb = {-1, -0.5, 6};
 
-        std::cout << "After projecting: " << P0f << ' ' << P1f << ' ' << P2f << '\n';
+        draw_line(ProjectOnPixel(vAf), ProjectOnPixel(vBf), sf::Color::Blue);
+        draw_line(ProjectOnPixel(vBf), ProjectOnPixel(vCf), sf::Color::Blue);
+        draw_line(ProjectOnPixel(vCf), ProjectOnPixel(vDf), sf::Color::Blue);
+        draw_line(ProjectOnPixel(vDf), ProjectOnPixel(vAf), sf::Color::Blue);
 
-        P0 = ViewPortToPixel(P0f);
-        P1 = ViewPortToPixel(P1f);
-        P2 = ViewPortToPixel(P2f);
+        draw_line(ProjectOnPixel(vAb), ProjectOnPixel(vAf), sf::Color::Magenta);
+        draw_line(ProjectOnPixel(vBb), ProjectOnPixel(vBf), sf::Color::Magenta);
+        draw_line(ProjectOnPixel(vCb), ProjectOnPixel(vCf), sf::Color::Magenta);
+        draw_line(ProjectOnPixel(vDb), ProjectOnPixel(vDf), sf::Color::Magenta);
 
-        std::cout << "VP -> Pixel: " << P0 << ' ' << P1 << ' ' << P2 << '\n';
-
-        //exit(1);
-
-        fill_triangle(P1, 1, P0, 1, P2, 0, sf::Color::Cyan);
-
-        // draw_triangle(P0, P1, P2, sf::Color::Black);
-
-        draw_line({0, 0},{90, 90}, sf::Color::Green);
-        draw_line({90, 0},{0, 90}, sf::Color::Red);
+        draw_line(ProjectOnPixel(vAb), ProjectOnPixel(vBb), sf::Color::Cyan);
+        draw_line(ProjectOnPixel(vBb), ProjectOnPixel(vCb), sf::Color::Cyan);
+        draw_line(ProjectOnPixel(vCb), ProjectOnPixel(vDb), sf::Color::Cyan);
+        draw_line(ProjectOnPixel(vDb), ProjectOnPixel(vAb), sf::Color::Cyan);
     }
 };
 
 int main(int argc, const char* argv[])
 {
-    TestRasterizer test_rasterizer(90, 90);
+    TestRasterizer test_rasterizer(500, 500);
 
     test_rasterizer.update_scene();
     test_rasterizer.save_scene();
