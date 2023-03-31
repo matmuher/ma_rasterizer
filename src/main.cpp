@@ -10,13 +10,18 @@ public:
 
     virtual void update_scene()
     {
-        draw_model(cube);
+        Instance cube1{cube, {-4, 0, -15}};
+        Instance cube2{cube, {4, 0, -15}};
+
+        draw_instance(cube1);
+        draw_instance(cube2);
+
+        // fill_triangle({50, 50}, {50, 0}, {150, 25}, sf::Color::Blue);
     }
 };
 
-int main(int argc, const char* argv[])
+int main()
 {
-    cube.move({0, 0, -5});
     TestRasterizer test_rasterizer(500, 500);
 
     test_rasterizer.update_scene();

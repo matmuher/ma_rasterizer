@@ -7,10 +7,10 @@ inline sf::Color shade(const sf::Color& clr, float h)
     h = clamp(h);
 
     auto tmp = sf::Color{   
-                        clr.r * h,
-                        clr.g * h,
-                        clr.b * h,
-                        clr.a
+                        sf::Uint8(clr.r * h),
+                        sf::Uint8(clr.g * h),
+                        sf::Uint8(clr.b * h),
+                        sf::Uint8(clr.a)
                     };
 
     std::cout << h << '\n';
@@ -105,6 +105,6 @@ void MaRasterizer::fill_triangle( sf::Vector2i P0, float h0,
         head_vector(h_horizontal);
 
         for (int x = x_l; x < x_r; ++x)
-            image.setPixel(x, y_walker, shade(color, h_horizontal[x - x_l]));
+            setPixel(x, y_walker, shade(color, h_horizontal[x - x_l]));
     }
 }

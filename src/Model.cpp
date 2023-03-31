@@ -8,7 +8,7 @@ void Model::move(sf::Vector3f move_vector)
     }
 }
 
-Model cube =
+const Model cube =
 {
     .vertices =
     {

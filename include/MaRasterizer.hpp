@@ -33,6 +33,10 @@ public:
     
 // [DRAWING]
 
+    inline bool is_in_borders(int x, int y) const;
+
+    void setPixel(int x, int y, const sf::Color& color);
+
     std::vector<float> interpolate(int indep_st, int indep_end,
                                    float dep_st, float dep_end) const;
 
@@ -48,6 +52,7 @@ public:
                         sf::Color color);
 
     void draw_model(const Model& model);
+    void draw_instance(const Instance& instance);
 
 // [CONVERTION]
 
@@ -69,6 +74,8 @@ sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
 
     void save_scene() const;
 };
+
+// [USEFUL]
 
 inline float clamp(float num)
 {

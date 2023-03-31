@@ -63,6 +63,20 @@ void sort_by_y( sf::Vector2i& P0, float& h0,
 
 // [DRAWING]
 
+inline bool MaRasterizer::is_in_borders(int x, int y) const
+{
+    return  (0 <= x)  && (x < m_Width) &&
+            (0 <= y)  && (y < m_Height);
+}
+
+void MaRasterizer::setPixel(int x, int y, const sf::Color& color)
+{
+    if (is_in_borders(x, y))
+    {
+        image.setPixel(x, y, color);
+    }
+}
+
 // general interpolation function:
 /*
         ^ (dep)
@@ -150,7 +164,7 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
 
         for (int x = P0.x; x < P1.x; ++x)
         {
-            image.setPixel(x, y_values[x - P0.x], color);
+            setPixel(x, y_values[x - P0.x], color);
         }
     }
     else
@@ -170,7 +184,7 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
         // info() << '\n';
 
         for (int y = P0.y; y < P1.y; ++y)
-            image.setPixel(x_values[y - P0.y], y, color);
+            setPixel(x_values[y - P0.y], y, color);
     }
 }
 
@@ -241,6 +255,17 @@ void MaRasterizer::draw_model(const Model& model)
         draw_triangle(  ProjectOnPixel(model.vertices[triangle.a]),
                         ProjectOnPixel(model.vertices[triangle.b]),
                         ProjectOnPixel(model.vertices[triangle.c]),
+                        triangle.clr);
+    }
+}
+
+void MaRasterizer::draw_instance(const Instance& instance)
+{
+    for (const auto& triangle : instance.model.triangles)
+    {
+        draw_triangle(  ProjectOnPixel(instance.model.vertices[triangle.a] + instance.position),
+                        ProjectOnPixel(instance.model.vertices[triangle.b] + instance.position),
+                        ProjectOnPixel(instance.model.vertices[triangle.c] + instance.position),
                         triangle.clr);
     }
 }

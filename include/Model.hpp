@@ -18,4 +18,10 @@ struct Model
     void move(sf::Vector3f move_vector);
 };
 
-extern Model cube;
+struct Instance
+{
+    const Model& model;
+    sf::Vector3f position;
+};
+
+extern const Model cube;
