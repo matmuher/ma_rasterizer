@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 std::ostream& operator<< (std::ostream& cout, sf::Vector2i P);
+std::ostream& operator<< (std::ostream& cout, sf::Vector2f P);
+
 
 std::ostream& operator<< (std::ostream& cout, sf::Color clr);
 

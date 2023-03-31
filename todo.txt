@@ -7,6 +7,10 @@ I. Triangles
 
 II. 3D projecting
 
+    1. Convertion functions:
+        * From canvas --to--> pixel array
+        * From view port --to--> canvas
+
     [pixel array: real place of pixel]:
 
         [0,0]---------[1280]>
@@ -35,10 +39,10 @@ II. 3D projecting
                 |
                 |
 
-    1. Convertion functions:
-        * From canvas --to--> pixel array
-        * From view port --to--> canvas
+    
+    2. Project vertex:
+        * project vertex from Scene to ViewPort
+        * connect vertex on ViewPort to form Scene's proejction
 
-    2. Project vertex
 
 

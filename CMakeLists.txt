@@ -9,7 +9,8 @@ add_library(MaRasterizerLib
             src/MaRasterizer.cpp
             src/Debug.cpp
             src/DrawingAlgos.cpp
-            src/CoordsConversion.cpp)
+            src/CoordsConversion.cpp
+            src/ProjectOnViewPort.cpp)
 
 target_link_libraries(MaRasterizerLib sfml-graphics sfml-window sfml-system)
 target_include_directories(MaRasterizerLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

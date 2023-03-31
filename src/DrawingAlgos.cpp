@@ -38,7 +38,7 @@ void MaRasterizer::fill_triangle( sf::Vector2i P0, float h0,
                         sf::Vector2i P2, float h2,
                         sf::Color color)
 {
-    sort_by_y(P0, P1, P2);
+    sort_by_y(P0, h0, P1, h1, P2, h2);
 
     info() << "Fill triangle: " << P0 << ' ' << P1 << ' ' << P2 << '\n';
 

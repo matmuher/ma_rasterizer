@@ -2,7 +2,7 @@
 
 // [CONVERTION]
 
-sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt)
+sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt) const
 {
     return sf::Vector2i {
                         m_Width  / 2 + cnvs_pnt.x,
@@ -10,7 +10,7 @@ sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt)
                         };
 }
 
-sf::Vector2i MaRasterizer::ViewPortToCanvas(const sf::Vector2f& view_port_pnt)
+sf::Vector2i MaRasterizer::ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const
 {
     return sf::Vector2i {
                         view_port_pnt.x / m_ViewPortWidth * m_Width,
@@ -18,7 +18,7 @@ sf::Vector2i MaRasterizer::ViewPortToCanvas(const sf::Vector2f& view_port_pnt)
                         };
 }
 
-sf::Vector2i MaRasterizer::ViewPortToPixel(const sf::Vector2f& view_port_pnt)
+sf::Vector2i MaRasterizer::ViewPortToPixel(const sf::Vector2f& view_port_pnt) const
 {
     return CanvasToPixel(ViewPortToCanvas(view_port_pnt));
 }

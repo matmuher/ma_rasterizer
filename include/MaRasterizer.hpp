@@ -11,6 +11,7 @@ class MaRasterizer
 
     const float m_ViewPortWidth;
     const float m_ViewPortHeight;
+    const float m_ViewPortDistance;
 
     mutable sf::RenderWindow window;
 
@@ -24,6 +25,7 @@ public:
 
     MaRasterizer(   int Width = 1000,
                     int Height = 1000,
+                    float ViewPortDistance = 1.,
                     float ViewPortWidth = 1.,
                     float ViewPortHeight = 1., 
                     bool window_mode = false);
@@ -46,9 +48,14 @@ public:
 
 // [CONVERTION]
 
-sf::Vector2i CanvasToPixel(const sf::Vector2i& cnvs_pnt);
-sf::Vector2i ViewPortToCanvas(const sf::Vector2f& view_port_pnt);
-sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt);
+sf::Vector2i CanvasToPixel(const sf::Vector2i& cnvs_pnt) const;
+sf::Vector2i ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const;
+sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt) const;
+
+// [PROJECT ON VIEW PORT]
+
+inline float project_component(float component, float z) const;
+sf::Vector2f ProjectOnViewPort(const sf::Vector3f& pnt) const;
 
 // [SCENE MANAGING]
 
@@ -73,3 +80,7 @@ inline float clamp(float num)
 inline sf::Color shade(const sf::Color& clr, float h);
 
 void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2);
+
+void sort_by_y( sf::Vector2i& P0, float& h0,
+                sf::Vector2i& P1, float& h1,
+                sf::Vector2i& P2, float& h2);

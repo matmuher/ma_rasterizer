@@ -6,11 +6,13 @@
 // [CTOR]
 
 MaRasterizer::MaRasterizer( int Width, int Height,
+                            float ViewPortDistance,
                             float ViewPortWidth, float ViewPortHeight, 
                             bool window_mode)
     :
         m_Width{Width},
         m_Height{Height},
+        m_ViewPortDistance{ViewPortDistance},
         m_ViewPortWidth{ViewPortWidth},
         m_ViewPortHeight{ViewPortHeight}
 {
@@ -34,6 +36,29 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2)
     if (!is_less_by_y(P0, P1)) std::swap(P0, P1);
     if (!is_less_by_y(P1, P2)) std::swap(P1, P2);
     if (!is_less_by_y(P0, P1)) std::swap(P0, P1);
+}
+
+void sort_by_y( sf::Vector2i& P0, float& h0,
+                sf::Vector2i& P1, float& h1,
+                sf::Vector2i& P2, float& h2)
+{
+    if (!is_less_by_y(P0, P1))
+    {
+        std::swap(P0, P1);
+        std::swap(h0, h1);
+    }
+
+    if (!is_less_by_y(P1, P2))
+    {
+        std::swap(P1, P2);
+        std::swap(h1, h2);
+    }
+
+    if (!is_less_by_y(P0, P1))
+    {
+        std::swap(P0, P1);
+        std::swap(h0, h1);
+    }
 }
 
 // [DRAWING]
