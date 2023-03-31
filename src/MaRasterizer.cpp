@@ -13,6 +13,20 @@ MaRasterizer::MaRasterizer(int Width, int Height, bool window_mode)
         window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
 }
 
+inline bool is_less_by_y(sf::Vector2i lhs, sf::Vector2i rhs)
+{
+    return lhs.y < rhs.y;
+}
+
+void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2)
+{
+    // unrolled bubble
+    
+    if (!is_less_by_y(P0, P1)) std::swap(P0, P1);
+    if (!is_less_by_y(P1, P2)) std::swap(P1, P2);
+    if (!is_less_by_y(P0, P1)) std::swap(P0, P1);
+}
+
 #include <vector>
 
 // general interpolation function:
@@ -25,20 +39,23 @@ MaRasterizer::MaRasterizer(int Width, int Height, bool window_mode)
         - - - - - - - > (indep)
 */
 std::vector<float>  MaRasterizer::interpolate(int indep_st, int indep_end,
-                                              int dep_st, int dep_end) const
+                                              float dep_st, float dep_end) const
 {
+    if (indep_st == indep_end)
+        return {};
+
     std::vector<float> dep_values;
 
         // let i0 = 0, i1 = 1 -> all in all 2 pixels
         // i.e. (i1 - i0 + 1)
     int range_len_indep = indep_end - indep_st;
-    int range_len_dep   = dep_end - dep_st;
+    float range_len_dep   = dep_end - dep_st;
 
     dep_values.reserve(range_len_indep);
 
         // slope shows how much should we move in dependent-axis
         // when move one step in independent axis
-    float slope = float(range_len_dep) / range_len_indep; 
+    float slope = range_len_dep / range_len_indep; 
     
     float dep_walker = dep_st;
     for (int indep_walker = 0; indep_walker <= range_len_indep; ++indep_walker)
@@ -79,6 +96,8 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
         But this issue can be overcomed with swapping axis.
     */
 
+   info() << P0 << "-->" << P1 << '\n';
+
     if (abs(P1.x - P0.x) >= abs(P1.y - P0.y))
     {
         info() << "x is independent\n";
@@ -96,7 +115,9 @@ void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
         // info() << '\n';
 
         for (int x = P0.x; x < P1.x; ++x)
+        {
             image.setPixel(x, y_values[x - P0.x], color);
+        }
     }
     else
     {
@@ -130,16 +151,7 @@ void MaRasterizer::draw_triangle(sf::Vector2i P0, sf::Vector2i P1,
 void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
                                  sf::Vector2i P2, sf::Color color)
 {
-    std::array<sf::Vector2i, 3> vertex{P0, P1, P2}; // move ?
-
-    auto sort_by_y = [](sf::Vector2i lhs, sf::Vector2i rhs) -> bool
-                            {return lhs.y < rhs.y;};
-
-    std::sort(vertex.begin(), vertex.end(), sort_by_y);
-
-    P0 = vertex[0];
-    P1 = vertex[1];
-    P2 = vertex[2];
+    sort_by_y(P0, P1, P2);
 
     info() << P0 << P1 << P2 << '\n';
 

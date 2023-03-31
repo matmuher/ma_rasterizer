@@ -8,18 +8,18 @@ public:
 
     virtual void update_scene()
     {
-        sf::Vector2i P0{10, 10}, P1{20, 20}, P2{50, 30};
+        sf::Vector2i P0{20, 0}, P1{80, 10}, P2{0, 90};
 
-        fill_triangle(P1, P0, P2, sf::Color::Cyan);
+        fill_triangle(P1, 0, P0, 0, P2, 1, sf::Color::Cyan);
 
-        draw_triangle(P0, P1, P2, sf::Color::Black);
+        // draw_triangle(P0, P1, P2, sf::Color::Black);
 
         // draw_line({10, 10},{10, 80}, sf::Color::Green);
         // draw_line({10, 10},{80, 10}, sf::Color::Red);
     }
 };
 
-int main()
+int main(int argc, const char* argv[])
 {
     TestRasterizer test_rasterizer(90, 90);
 
