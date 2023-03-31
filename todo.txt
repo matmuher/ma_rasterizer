@@ -48,7 +48,9 @@ III. Describe scene
 
 1. Draw model as array of vertexes and triangles:
 
-1. Array of 3D points with names (vector is enough)
-2. Array of triangles (3 points' names)
+* Array of 3D points with names (vector is enough)
+* Array of triangles (3 points' names)
+
+2. Make instance that is transformed model
 
 

@@ -10,9 +10,9 @@ class MaRasterizer
     const int m_Width;
     const int m_Height;
 
+    const float m_ViewPortDistance;
     const float m_ViewPortWidth;
     const float m_ViewPortHeight;
-    const float m_ViewPortDistance;
 
     mutable sf::RenderWindow window;
 

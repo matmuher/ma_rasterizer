@@ -13,8 +13,8 @@ sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt) const
 sf::Vector2i MaRasterizer::ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const
 {
     return sf::Vector2i {
-                        view_port_pnt.x / m_ViewPortWidth * m_Width,
-                        view_port_pnt.y / m_ViewPortHeight * m_Height
+                        int(view_port_pnt.x / m_ViewPortWidth * m_Width),
+                        int(view_port_pnt.y / m_ViewPortHeight * m_Height)
                         };
 }
 

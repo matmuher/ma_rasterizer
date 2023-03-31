@@ -10,8 +10,8 @@ public:
 
     virtual void update_scene()
     {
-        Instance cube1{cube, {-4, 0, -15}};
-        Instance cube2{cube, {4, 0, -15}};
+        Instance cube1{cube, {-4, 0, -15}, 0, 1.5};
+        Instance cube2{cube, {4, 0, -15}, -90, 1};
 
         draw_instance(cube1);
         draw_instance(cube2);

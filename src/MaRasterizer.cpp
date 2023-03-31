@@ -263,9 +263,9 @@ void MaRasterizer::draw_instance(const Instance& instance)
 {
     for (const auto& triangle : instance.model.triangles)
     {
-        draw_triangle(  ProjectOnPixel(instance.model.vertices[triangle.a] + instance.position),
-                        ProjectOnPixel(instance.model.vertices[triangle.b] + instance.position),
-                        ProjectOnPixel(instance.model.vertices[triangle.c] + instance.position),
+        draw_triangle(  ProjectOnPixel(instance.transform(instance.model.vertices[triangle.a])),
+                        ProjectOnPixel(instance.transform(instance.model.vertices[triangle.b])),
+                        ProjectOnPixel(instance.transform(instance.model.vertices[triangle.c])),
                         triangle.clr);
     }
 }
