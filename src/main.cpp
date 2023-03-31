@@ -8,7 +8,12 @@ public:
 
     virtual void update_scene()
     {
-        sf::Vector2i P0{20, 0}, P1{80, 10}, P2{0, 90};
+        sf::Vector2i P0{81, 9}, P1{9, 9}, P2{45, 81};
+        sf::Vector2f P0f{-0.5, 0.5}, P1f{0.5, 0.5}, P2f{0, -0.5};
+
+        P0 = ViewPortToPixel(P0f);
+        P1 = ViewPortToPixel(P1f);
+        P2 = ViewPortToPixel(P2f);
 
         fill_triangle(P1, 0, P0, 0, P2, 1, sf::Color::Cyan);
 

@@ -1,17 +1,26 @@
+#include <vector>
+#include <cassert>
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
-#include <cassert>
 
-MaRasterizer::MaRasterizer(int Width, int Height, bool window_mode)
+// [CTOR]
+
+MaRasterizer::MaRasterizer( int Width, int Height,
+                            float ViewPortWidth, float ViewPortHeight, 
+                            bool window_mode)
     :
         m_Width{Width},
-        m_Height{Height}
+        m_Height{Height},
+        m_ViewPortWidth{ViewPortWidth},
+        m_ViewPortHeight{ViewPortHeight}
 {
     image.create(m_Width, m_Height, sf::Color::White);
 
     if (window_mode)
         window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
 }
+
+// [SORT]
 
 inline bool is_less_by_y(sf::Vector2i lhs, sf::Vector2i rhs)
 {
@@ -27,7 +36,7 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2)
     if (!is_less_by_y(P0, P1)) std::swap(P0, P1);
 }
 
-#include <vector>
+// [DRAWING]
 
 // general interpolation function:
 /*
@@ -199,6 +208,8 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
         draw_line({x1, y_walker}, {x2, y_walker}, color);
     }
 }
+
+// [SCENE MANAGING]
 
 void MaRasterizer::show_scene() const
 {

@@ -40,13 +40,21 @@ void MaRasterizer::fill_triangle( sf::Vector2i P0, float h0,
 {
     sort_by_y(P0, P1, P2);
 
+    info() << "Fill triangle: " << P0 << ' ' << P1 << ' ' << P2 << '\n';
+
     auto h01 = interpolate(P0.y, P1.y, h0, h1);
     auto x01 = interpolate(P0.y, P1.y, P0.x, P1.x);
 
     // P1 appears in both x01, x12. Leave ony one
-    x01.pop_back();
-    h01.pop_back();
-
+    if (!x01.empty())
+    {
+        x01.pop_back();
+    }
+    if (!h01.empty())
+    {
+        h01.pop_back();
+    }
+    
     auto h12 = interpolate(P1.y, P2.y, h1, h2);
     auto x12 = interpolate(P1.y, P2.y, P1.x, P2.x);
     

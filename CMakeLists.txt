@@ -5,7 +5,12 @@ find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic -g)
 
-add_library(MaRasterizerLib src/MaRasterizer.cpp src/Debug.cpp src/DrawingAlgos.cpp)
+add_library(MaRasterizerLib
+            src/MaRasterizer.cpp
+            src/Debug.cpp
+            src/DrawingAlgos.cpp
+            src/CoordsConversion.cpp)
+
 target_link_libraries(MaRasterizerLib sfml-graphics sfml-window sfml-system)
 target_include_directories(MaRasterizerLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
