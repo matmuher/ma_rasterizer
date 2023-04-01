@@ -15,8 +15,6 @@ public:
 
         draw_instance(cube1);
         draw_instance(cube2);
-
-        // fill_triangle({50, 50}, {50, 0}, {150, 25}, sf::Color::Blue);
     }
 };
 
