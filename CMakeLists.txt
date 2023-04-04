@@ -16,7 +16,11 @@ add_library(MaRasterizerLib
 target_link_libraries(MaRasterizerLib sfml-graphics sfml-window sfml-system)
 target_include_directories(MaRasterizerLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+add_library(EigenLib INTERFACE)
+target_include_directories(EigenLib INTERFACE ../eigen/)
+
 add_executable(MaApp src/main.cpp)
 target_link_libraries(MaApp MaRasterizerLib)
+target_link_libraries(MaApp EigenLib)
 
 install(TARGETS MaApp DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
