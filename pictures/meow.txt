@@ -1,0 +1,12 @@
+#!/bin/bash
+FILES=$(ls)
+prefix="![](pictures/"
+
+#echo $FILES
+
+for file in $FILES
+do
+temp=$(basename $file)
+echo "$prefix$temp)"
+#mv $temp $prefix$temp
+done

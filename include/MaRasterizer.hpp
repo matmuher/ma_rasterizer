@@ -68,9 +68,11 @@ sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
 
 // [SCENE MANAGING]
 
+    void clear_scene();
+
     virtual void update_scene() = 0;
 
-    void show_scene() const;
+    void render_scene();
 
     void save_scene() const;
 };

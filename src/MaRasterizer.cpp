@@ -1,5 +1,6 @@
 #include <vector>
 #include <cassert>
+#include <unistd.h>
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
 
@@ -272,13 +273,22 @@ void MaRasterizer::draw_instance(const Instance& instance)
 
 // [SCENE MANAGING]
 
-void MaRasterizer::show_scene() const
+void MaRasterizer::clear_scene()
+{
+    for (int y = 0; y < m_Height; ++y)
+        for (int x = 0; x < m_Width; ++x)
+        {
+            setPixel(x, y, sf::Color::White);
+        }
+}
+
+void MaRasterizer::render_scene()
 {
     sf::Texture texture;
-    texture.loadFromImage(image);
 
+
+     //unsigned int microseconds = 1;
     sf::Sprite sprite;
-    sprite.setTexture(texture);
 
     while (window.isOpen())
     {
@@ -289,9 +299,16 @@ void MaRasterizer::show_scene() const
                 window.close();
         }
 
+        clear_scene();
+        update_scene();
+
+        texture.loadFromImage(image);
+        sprite.setTexture(texture);
+
         window.clear();
         window.draw(sprite);
         window.display();
+        //usleep(microseconds);
     }
 }
 
