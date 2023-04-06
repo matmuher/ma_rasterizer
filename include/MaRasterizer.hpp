@@ -7,12 +7,24 @@
 
 class MaRasterizer
 {
+private:
+// [camera settings]
+
     const int m_Width;
     const int m_Height;
 
     const float m_ViewPortDistance;
     const float m_ViewPortWidth;
     const float m_ViewPortHeight;
+
+protected:
+
+    float rotate_angle{};
+    sf::Vector3f translation_vec{};
+
+private:
+
+// [implementation detailes]
 
     mutable sf::RenderWindow window;
 
@@ -66,6 +78,9 @@ inline float project_component(float component, float z) const;
 sf::Vector2f ProjectOnViewPort(const sf::Vector3f& pnt) const;
 sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
 
+// [CAMERA TRANFORMATION]
+
+
 // [SCENE MANAGING]
 
     void clear_scene();
@@ -97,3 +112,9 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2);
 void sort_by_y( sf::Vector2i& P0, float& h0,
                 sf::Vector2i& P1, float& h1,
                 sf::Vector2i& P2, float& h2);
+
+sf::Vector3f vec_move(sf::Vector3f src, const sf::Vector3f& move_vector);
+
+sf::Vector3f vec_rotate_z(sf::Vector3f vec, float rotate_angle);
+
+sf::Vector3f vec_transform(sf::Vector3f vec, float rotate_angle, const sf::Vector3f& move_vector);

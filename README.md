@@ -94,7 +94,24 @@ Solution - for  almost vertical lines use x=f(y) approximation(details in [src/M
 
 ![](pictures/transormed_cubes.png)
 
-4. Make transformations more homogeneous (check homogeneous coords)
+4. Transform Camera (rotate + translation)
+
+![](pictures/camera_transformation.png)
+
+5. Make transformations homogeneous (check homogeneous coords)
+
+In program we have a series of transformations, to be exact:
+
+* Instance Transformation: every Instance is transformed model it allows us to
+    define entity's geometry once and then just reuse it (without redundant vertecis copying for example).
+
+*  Projection: series of projections: scene -> View Port -> canvas -> pixel_array
+
+* And now, when we wanna add Camera moving, we gonna add camera transform
+    (briefly, point is movement is relative. so to create effect of transforming camera
+    we only need to apply inverse transformation to all objects of scene)
+
+
 
 ### IV. Clipping
 

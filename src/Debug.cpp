@@ -5,6 +5,11 @@ std::ostream& operator<< (std::ostream& cout, sf::Vector2i P)
     return cout << '(' << P.x << ',' << P.y << ')';
 }
 
+std::ostream& operator<< (std::ostream& cout, sf::Vector3f P)
+{
+    return cout << '(' << P.x << ',' << P.y << ',' << P.z << ')';
+}
+
 std::ostream& operator<< (std::ostream& cout, sf::Vector2f P)
 {
     return cout << '(' << P.x << ',' << P.y << ')';

@@ -13,14 +13,14 @@ sf::Vector3f Instance::transform(const sf::Vector3f vec) const
 {
     sf::Vector3f transformed_vec = vec;
 
-    transformed_vec = rotate_z(transformed_vec);
+    transformed_vec = rotate_y(transformed_vec);
     transformed_vec *= scale;
     transformed_vec += position;
 
     return transformed_vec;
 }
 
-sf::Vector3f Instance::rotate_z(const sf::Vector3f vec) const
+sf::Vector3f Instance::rotate_y(const sf::Vector3f vec) const
 {
     return {
             vec.x * cos(deg2rad(rotate_angle)) + vec.z * sin(deg2rad(rotate_angle)),
