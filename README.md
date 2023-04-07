@@ -111,8 +111,6 @@ In program we have a series of transformations, to be exact:
     (briefly, point is movement is relative. so to create effect of transforming camera
     we only need to apply inverse transformation to all objects of scene)
 
-
-
 ### IV. Clipping
 
 Remove from scene objects that are out of camera

@@ -14,8 +14,10 @@ public:
 
     virtual void update_scene()
     {
-        translation_vec += {0, 0, 5};
-        rotate_angle += 20;
+        set_camera_rotation(360);
+        set_camera_translation({1, 1, 1});
+        update_camera_transform();
+        std::cout << camera_transform << '\n';
 
         Instance cube1{cube, {-4, 0, -15}, 0, 1.5};
         Instance cube2{cube, {4, 0, -15}, -90, 1};
@@ -25,15 +27,8 @@ public:
     }
 };
 
-using Matrix = Eigen::MatrixXd;
-
 int main()
 {
-    // Matrix mat(3, 3);
-    // mat(0, 1) = 5;
-    // mat(1, 0) = -5;
-    // std::cout << mat;
-
     TestRasterizer test_rasterizer(500, 500);
 
     test_rasterizer.update_scene();

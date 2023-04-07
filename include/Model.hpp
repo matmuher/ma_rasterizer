@@ -17,6 +17,8 @@ struct Model
     std::vector<TriangleVertices> triangles;
 
     void move(sf::Vector3f move_vector);
+
+    Model() = delete;
 };
 
 struct Instance

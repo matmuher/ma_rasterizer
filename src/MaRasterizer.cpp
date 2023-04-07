@@ -19,6 +19,12 @@ MaRasterizer::MaRasterizer( int Width, int Height,
 {
     image.create(m_Width, m_Height, sf::Color::White);
 
+    camera_transform << 
+                        0, 0, 0, 0,
+                        0, 0, 0, 0,
+                        0, 0, 0, 0,
+                        0, 0, 0, 0;
+
     if (window_mode)
         window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
 }

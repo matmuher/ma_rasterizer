@@ -4,6 +4,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 #include <Model.hpp>
+#include <Homogeneous.hpp>
 
 class MaRasterizer
 {
@@ -18,6 +19,9 @@ private:
     const float m_ViewPortHeight;
 
 protected:
+
+    Mat4f camera_transform;
+    bool is_camera_need_update{false};
 
     float rotate_angle{};
     sf::Vector3f translation_vec{};
@@ -80,6 +84,11 @@ sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
 
 // [CAMERA TRANFORMATION]
 
+void set_camera_rotation(float angle);
+
+void set_camera_translation(sf::Vector3f vec);
+
+void update_camera_transform();
 
 // [SCENE MANAGING]
 

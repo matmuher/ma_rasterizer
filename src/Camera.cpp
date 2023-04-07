@@ -25,3 +25,29 @@ sf::Vector3f vec_transform(sf::Vector3f vec, float rotate_angle, const sf::Vecto
 
     return vec;
 }
+
+void MaRasterizer::update_camera_transform()
+{
+    info() << "translation vector: " << translation_vec << '\n';
+    info() << "angle: " << rotate_angle << '\n';
+
+    camera_transform = 
+            create_translation_matrix(-translation_vec)
+            * 
+            create_rotation_y_matrix(deg2rad(-rotate_angle));
+    
+    is_camera_need_update = false;
+}
+
+
+void MaRasterizer::set_camera_rotation(float angle)
+{
+    rotate_angle = angle;
+    is_camera_need_update = true;
+}
+
+void MaRasterizer::set_camera_translation(sf::Vector3f vec)
+{
+    translation_vec = vec;
+    is_camera_need_update = true;
+}
