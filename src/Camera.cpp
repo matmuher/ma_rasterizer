@@ -1,53 +1,113 @@
+#include <Camera.hpp>
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
 
-sf::Vector3f vec_move(sf::Vector3f src, const sf::Vector3f& move_vector)
+// [ctors]
+
+Camera::Camera
+        (
+            int Width,
+            int Height,
+            float ViewPortDistance,
+            float ViewPortWidth,
+            float ViewPortHeight,
+            float angle,
+            sf::Vector3f position
+        )
+    :
+        m_Width{Width},
+        m_Height{Height},
+        m_ViewPortDistance{ViewPortDistance},
+        m_ViewPortWidth{ViewPortWidth},
+        m_ViewPortHeight{ViewPortHeight},
+        m_angle{angle},
+        m_position{position}
 {
-    return src += move_vector;
+    update();
 }
 
-sf::Vector3f vec_rotate_y(sf::Vector3f vec, float rotate_angle)
+// [setters]
+
+void Camera::set_rotation(float angle)
 {
-    return {
-            vec.x * cosf(deg2rad(rotate_angle)) + vec.z * sinf(deg2rad(rotate_angle)),
-            vec.y,
-            -vec.x * sinf(deg2rad(rotate_angle)) + vec.z * cosf(deg2rad(rotate_angle))
-            };
+    is_camera_transform_outdated = true;
+    m_angle = angle;
 }
 
-sf::Vector3f vec_transform(sf::Vector3f vec, float rotate_angle, const sf::Vector3f& move_vector)
+void Camera::set_position(const sf::Vector3f& position)
 {
-    vec = vec_rotate_y(vec, rotate_angle);
-
-    std::cout << "Rotated vector: " << vec << '\n';
-
-    vec = vec_move(vec, move_vector);
-
-    return vec;
+    is_camera_transform_outdated = true;
+    m_position = position;
 }
 
-void MaRasterizer::update_camera_transform()
-{
-    info() << "translation vector: " << translation_vec << '\n';
-    info() << "angle: " << rotate_angle << '\n';
+// [getters]
 
-    camera_transform = 
-            create_translation_matrix(-translation_vec)
-            * 
-            create_rotation_y_matrix(deg2rad(-rotate_angle));
-    
-    is_camera_need_update = false;
+const Mat4f& Camera::get_camera_transform() const
+{
+    return camera_transform;
 }
 
-
-void MaRasterizer::set_camera_rotation(float angle)
+const Mat3x4f& Camera::get_project_transform() const
 {
-    rotate_angle = angle;
-    is_camera_need_update = true;
+    return project_transform;
 }
 
-void MaRasterizer::set_camera_translation(sf::Vector3f vec)
+int Camera::get_width() const
 {
-    translation_vec = vec;
-    is_camera_need_update = true;
+    return m_Width;
+}
+
+int Camera::get_height() const
+{
+    return m_Height;
+}
+
+float Camera::get_vp_width() const
+{
+    return m_ViewPortWidth;
+}
+
+float Camera::get_vp_height() const
+{
+    return m_ViewPortHeight;
+}
+
+float Camera::get_vp_dist() const
+{
+    return m_ViewPortDistance;
+}
+
+// [update]
+
+void Camera::update()
+{
+    if (is_camera_transform_outdated)
+    {
+        update_camera_transform();
+        is_camera_transform_outdated = false;
+    }
+
+    if (is_project_transform_outdated)
+    {
+        update_project_transform();
+        is_project_transform_outdated = false;
+    }
+}
+
+void Camera::update_camera_transform()
+{
+    camera_transform =  create_translation_matrix(m_position)
+                        *
+                        create_rotation_y_matrix(m_angle);
+}
+
+void Camera::update_project_transform()
+{
+    project_transform = create_projection_matrix(
+                                                m_ViewPortDistance,
+                                                m_ViewPortWidth,
+                                                m_ViewPortHeight,
+                                                m_Width,
+                                                m_Height
+                                                );
 }

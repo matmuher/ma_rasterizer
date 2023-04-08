@@ -11,41 +11,14 @@ MaRasterizer::MaRasterizer( int Width, int Height,
                             float ViewPortWidth, float ViewPortHeight, 
                             bool window_mode)
     :
-        m_Width{Width},
-        m_Height{Height},
-        m_ViewPortDistance{ViewPortDistance},
-        m_ViewPortWidth{ViewPortWidth},
-        m_ViewPortHeight{ViewPortHeight}
+        camera{Width, Height, ViewPortDistance, ViewPortWidth, ViewPortHeight, 0, {0, 0, 0}}
 {
-    image.create(m_Width, m_Height, sf::Color::White);
+    image.create(camera.get_width(), camera.get_height(), sf::Color::White);
 
-    camera_transform << 1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1;
-
-    project_transform <<    0, 0, 0, 0,
-                            0, 0, 0, 0,
-                            0, 0, 0, 0;
-
-    update_project_transform();
+    camera.update();
 
     if (window_mode)
-        window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
-}
-
-/*
-    It is frequently met pattern: I need update matrix if parameter is changed
-*/
-void MaRasterizer::update_project_transform()
-{
-    project_transform = create_projection_matrix(
-                                                m_ViewPortDistance,
-                                                m_ViewPortWidth,
-                                                m_ViewPortHeight,
-                                                m_Width,
-                                                m_Height
-                                                );
+        window.create(sf::VideoMode(camera.get_width(), camera.get_height()), "ma_rasterizer");
 }
 
 // [SORT]
@@ -91,8 +64,8 @@ void sort_by_y( sf::Vector2i& P0, float& h0,
 
 inline bool MaRasterizer::is_in_borders(int x, int y) const
 {
-    return  (0 <= x)  && (x < m_Width) &&
-            (0 <= y)  && (y < m_Height);
+    return  (0 <= x)  && (x < camera.get_width()) &&
+            (0 <= y)  && (y < camera.get_height());
 }
 
 void MaRasterizer::setPixel(int x, int y, const sf::Color& color)
@@ -289,9 +262,15 @@ void MaRasterizer::draw_instance(const Instance& instance)
 {
     for (const auto& triangle : instance.model.triangles)
     {
-        draw_triangle(  transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.a]),
-                        transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.b]),
-                        transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.c]),
+        draw_triangle(  transform_point(instance.transform_matrix,
+                                        instance.model.vertices[triangle.a]),
+
+                        transform_point(instance.transform_matrix,
+                                        instance.model.vertices[triangle.b]),
+
+                        transform_point(instance.transform_matrix,
+                                        instance.model.vertices[triangle.c]),
+                        
                         triangle.clr);
     }
 }
@@ -300,8 +279,8 @@ void MaRasterizer::draw_instance(const Instance& instance)
 
 void MaRasterizer::clear_scene()
 {
-    for (int y = 0; y < m_Height; ++y)
-        for (int x = 0; x < m_Width; ++x)
+    for (int y = 0; y < camera.get_height(); ++y)
+        for (int x = 0; x < camera.get_width(); ++x)
         {
             setPixel(x, y, sf::Color::White);
         }

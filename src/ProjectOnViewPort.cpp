@@ -4,7 +4,7 @@
 
 float MaRasterizer::project_component(float component, float z) const
 {
-    return component * (-m_ViewPortDistance) / z;
+    return component * (-camera.get_vp_dist()) / z;
 }
 
 sf::Vector2f MaRasterizer::ProjectOnViewPort(const sf::Vector3f& pnt) const

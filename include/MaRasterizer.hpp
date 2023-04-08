@@ -3,35 +3,19 @@
 #include <string>
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <Camera.hpp>
 #include <Model.hpp>
 #include <Homogeneous.hpp>
 
 class MaRasterizer
 {
-private:
-
-// [camera settings]
-
-    const int m_Width;
-    const int m_Height;
-
-    const float m_ViewPortDistance;
-    const float m_ViewPortWidth;
-    const float m_ViewPortHeight;
-
 protected:
 
-    Mat4f camera_transform;
-    bool is_camera_need_update{false};
-
-    Mat3x4f project_transform; 
-
-    float rotate_angle{};
-    sf::Vector3f translation_vec{};
+    Camera camera;
 
 private:
 
-// [implementation detailes]
+// [implementation details]
 
     mutable sf::RenderWindow window;
 
@@ -75,6 +59,9 @@ public:
 
 // [CONVERTION]
 
+sf::Vector2i transform_point(   const Mat4f& instance_transform,
+                                const sf::Vector3f& point) const;
+
 sf::Vector2i CanvasToPixel(const sf::Vector2i& cnvs_pnt) const;
 sf::Vector2i ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const;
 sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt) const;
@@ -84,16 +71,6 @@ sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt) const;
 inline float project_component(float component, float z) const;
 sf::Vector2f ProjectOnViewPort(const sf::Vector3f& pnt) const;
 sf::Vector2i ProjectOnPixel(const sf::Vector3f& pnt) const;
-
-// [CAMERA TRANFORMATION]
-
-void set_camera_rotation(float angle);
-
-void set_camera_translation(sf::Vector3f vec);
-
-void update_camera_transform();
-
-void update_project_transform();
 
 // [SCENE MANAGING]
 
@@ -126,9 +103,3 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2);
 void sort_by_y( sf::Vector2i& P0, float& h0,
                 sf::Vector2i& P1, float& h1,
                 sf::Vector2i& P2, float& h2);
-
-sf::Vector3f vec_move(sf::Vector3f src, const sf::Vector3f& move_vector);
-
-sf::Vector3f vec_rotate_z(sf::Vector3f vec, float rotate_angle);
-
-sf::Vector3f vec_transform(sf::Vector3f vec, float rotate_angle, const sf::Vector3f& move_vector);
