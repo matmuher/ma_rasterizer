@@ -14,13 +14,11 @@ public:
 
     virtual void update_scene()
     {
-        set_camera_rotation(360);
-        set_camera_translation({1, 1, 1});
-        update_camera_transform();
-        std::cout << camera_transform << '\n';
+        Instance cube1{cube, 1, 0, {-4, 0, -15}};
+        Instance cube2{cube, 2, 0, {4, 0, -15}};
 
-        Instance cube1{cube, {-4, 0, -15}, 0, 1.5};
-        Instance cube2{cube, {4, 0, -15}, -90, 1};
+        cube1.update_transform();
+        cube2.update_transform();
 
         draw_instance(cube1);
         draw_instance(cube2);

@@ -9,9 +9,9 @@ sf::Vector3f vec_move(sf::Vector3f src, const sf::Vector3f& move_vector)
 sf::Vector3f vec_rotate_y(sf::Vector3f vec, float rotate_angle)
 {
     return {
-            vec.x * cos(deg2rad(rotate_angle)) + vec.z * sin(deg2rad(rotate_angle)),
+            vec.x * cosf(deg2rad(rotate_angle)) + vec.z * sinf(deg2rad(rotate_angle)),
             vec.y,
-            -vec.x * sin(deg2rad(rotate_angle)) + vec.z * cos(deg2rad(rotate_angle))
+            -vec.x * sinf(deg2rad(rotate_angle)) + vec.z * cosf(deg2rad(rotate_angle))
             };
 }
 

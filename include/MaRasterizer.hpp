@@ -9,6 +9,7 @@
 class MaRasterizer
 {
 private:
+
 // [camera settings]
 
     const int m_Width;
@@ -22,6 +23,8 @@ protected:
 
     Mat4f camera_transform;
     bool is_camera_need_update{false};
+
+    Mat3x4f project_transform; 
 
     float rotate_angle{};
     sf::Vector3f translation_vec{};
@@ -89,6 +92,8 @@ void set_camera_rotation(float angle);
 void set_camera_translation(sf::Vector3f vec);
 
 void update_camera_transform();
+
+void update_project_transform();
 
 // [SCENE MANAGING]
 

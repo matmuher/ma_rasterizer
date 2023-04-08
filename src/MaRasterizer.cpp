@@ -19,14 +19,33 @@ MaRasterizer::MaRasterizer( int Width, int Height,
 {
     image.create(m_Width, m_Height, sf::Color::White);
 
-    camera_transform << 
-                        0, 0, 0, 0,
-                        0, 0, 0, 0,
-                        0, 0, 0, 0,
-                        0, 0, 0, 0;
+    camera_transform << 1, 0, 0, 0,
+                        0, 1, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1;
+
+    project_transform <<    0, 0, 0, 0,
+                            0, 0, 0, 0,
+                            0, 0, 0, 0;
+
+    update_project_transform();
 
     if (window_mode)
         window.create(sf::VideoMode(m_Width, m_Height), "ma_rasterizer");
+}
+
+/*
+    It is frequently met pattern: I need update matrix if parameter is changed
+*/
+void MaRasterizer::update_project_transform()
+{
+    project_transform = create_projection_matrix(
+                                                m_ViewPortDistance,
+                                                m_ViewPortWidth,
+                                                m_ViewPortHeight,
+                                                m_Width,
+                                                m_Height
+                                                );
 }
 
 // [SORT]
@@ -270,9 +289,9 @@ void MaRasterizer::draw_instance(const Instance& instance)
 {
     for (const auto& triangle : instance.model.triangles)
     {
-        draw_triangle(  ProjectOnPixel(vec_transform(instance.transform(instance.model.vertices[triangle.a]), -rotate_angle, -translation_vec)),
-                        ProjectOnPixel(vec_transform(instance.transform(instance.model.vertices[triangle.b]), -rotate_angle, -translation_vec)),
-                        ProjectOnPixel(vec_transform(instance.transform(instance.model.vertices[triangle.c]), -rotate_angle, -translation_vec)),
+        draw_triangle(  transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.a]),
+                        transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.b]),
+                        transform_point(camera_transform, instance.transform_matrix, project_transform, instance.model.vertices[triangle.c]),
                         triangle.clr);
     }
 }

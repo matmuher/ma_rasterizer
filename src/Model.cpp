@@ -23,9 +23,9 @@ sf::Vector3f Instance::transform(const sf::Vector3f vec) const
 sf::Vector3f Instance::rotate_y(const sf::Vector3f vec) const
 {
     return {
-            vec.x * cos(deg2rad(rotate_angle)) + vec.z * sin(deg2rad(rotate_angle)),
+            vec.x * cosf(deg2rad(rotate_angle)) + vec.z * sinf(deg2rad(rotate_angle)),
             vec.y,
-            -vec.x * sin(deg2rad(rotate_angle)) + vec.z * cos(deg2rad(rotate_angle))
+            -vec.x * sinf(deg2rad(rotate_angle)) + vec.z * cosf(deg2rad(rotate_angle))
             };
     // return vec;
 }
