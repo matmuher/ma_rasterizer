@@ -12,7 +12,8 @@ add_library(MaRasterizerLib
             src/CoordsConversion.cpp
             src/ProjectOnViewPort.cpp
             src/Model.cpp
-            src/Camera.cpp)
+            src/Camera.cpp
+            src/Updater.cpp)
 
 target_link_libraries(MaRasterizerLib sfml-graphics sfml-window sfml-system)
 target_include_directories(MaRasterizerLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

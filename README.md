@@ -77,7 +77,7 @@ Solution - for  almost vertical lines use x=f(y) approximation(details in [src/M
 
 ![](pictures/project_cube.png)
 
-### III. Describe scene [@currently here]
+### III. Describe scene
 
 1. Draw model as array of vertexes and triangles:
 
@@ -98,26 +98,30 @@ Solution - for  almost vertical lines use x=f(y) approximation(details in [src/M
 
 ![](pictures/camera_transformation.png)
 
-5. Make transformations homogeneous (check homogeneous coords)
+5. Make transformations homogeneous (check homogeneous coordinates)
 
 In program we have a series of transformations, to be exact:
 
-* Instance Transformation: every Instance is transformed model it allows us to
-    define entity's geometry once and then just reuse it (without redundant vertecis copying for example).
+* Instance Transformation: every Instance is transformed model. It allows us to
+    define entity's geometry once and then just reuse it (without redundant vertecis copying).
 
-*  Projection: series of projections: scene -> View Port -> canvas -> pixel_array
+*  Projection: series of projections: Scene -> View Port -> Canvas -> pixel_array
 
-* And now, when we wanna add Camera moving, we gonna add camera transform
-    (briefly, point is movement is relative. so to create effect of transforming camera
-    we only need to apply inverse transformation to all objects of scene)
+* Camera movement (As movement is relative, it doesn't matter whether Camera is moving around Cube or Cube is moving around Camera. So to get desired effect we just need to apply inversed camera movement transformation)
 
-Steps of implementing:
+*Steps of implementing*:
 
-- Add camera transformation matrix (and its update system)
-- Transform isntance with matrix
-- Concatenate InstanceTransform + CameraTransform + MatrixProjection
+- Install Eigen lib for linear algebra
+- Add various matrices to transform point (scale, rotate, project, translation) 
+- Implement Instance transform using matrices
+- Implement Camera transform using matrices
+- Concatenate Instance Transform + Camera Transform + Projection Transform to completely transform point
+- Add matrices updating system (kinda **Observer pattern**)
 
-### IV. Clipping
+
+![](pictures/complex_movement.gif)
+
+### IV. Clipping [@currently here]
 
 Remove from scene objects that are out of camera
 

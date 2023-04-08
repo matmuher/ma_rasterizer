@@ -6,10 +6,13 @@
 #include <Camera.hpp>
 #include <Model.hpp>
 #include <Homogeneous.hpp>
+#include <Updater.hpp>
 
 class MaRasterizer
 {
 protected:
+
+    Updater updater;
 
     Camera camera;
 

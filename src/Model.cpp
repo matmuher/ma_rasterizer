@@ -1,34 +1,4 @@
 #include <Model.hpp>
-#include <cmath>
-
-void Model::move(sf::Vector3f move_vector)
-{
-    for (auto& vertex : vertices)
-    {
-        vertex += move_vector;
-    }
-}
-
-sf::Vector3f Instance::transform(const sf::Vector3f vec) const
-{
-    sf::Vector3f transformed_vec = vec;
-
-    transformed_vec = rotate_y(transformed_vec);
-    transformed_vec *= scale;
-    transformed_vec += position;
-
-    return transformed_vec;
-}
-
-sf::Vector3f Instance::rotate_y(const sf::Vector3f vec) const
-{
-    return {
-            vec.x * cosf(deg2rad(rotate_angle)) + vec.z * sinf(deg2rad(rotate_angle)),
-            vec.y,
-            -vec.x * sinf(deg2rad(rotate_angle)) + vec.z * cosf(deg2rad(rotate_angle))
-            };
-    // return vec;
-}
 
 const Model cube =
 {

@@ -6,6 +6,7 @@
 
 Camera::Camera
         (
+            Updater& updater,
             int Width,
             int Height,
             float ViewPortDistance,
@@ -15,6 +16,7 @@ Camera::Camera
             sf::Vector3f position
         )
     :
+        Updatable{updater},
         m_Width{Width},
         m_Height{Height},
         m_ViewPortDistance{ViewPortDistance},
@@ -32,12 +34,14 @@ void Camera::set_rotation(float angle)
 {
     is_camera_transform_outdated = true;
     m_angle = angle;
+    need_update();
 }
 
 void Camera::set_position(const sf::Vector3f& position)
 {
     is_camera_transform_outdated = true;
     m_position = position;
+    need_update();
 }
 
 // [getters]
@@ -96,9 +100,9 @@ void Camera::update()
 
 void Camera::update_camera_transform()
 {
-    camera_transform =  create_translation_matrix(m_position)
+    camera_transform =  create_translation_matrix(-m_position)
                         *
-                        create_rotation_y_matrix(m_angle);
+                        create_rotation_y_matrix(deg2rad(-m_angle));
 }
 
 void Camera::update_project_transform()

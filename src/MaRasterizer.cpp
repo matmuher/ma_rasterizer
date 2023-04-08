@@ -11,7 +11,16 @@ MaRasterizer::MaRasterizer( int Width, int Height,
                             float ViewPortWidth, float ViewPortHeight, 
                             bool window_mode)
     :
-        camera{Width, Height, ViewPortDistance, ViewPortWidth, ViewPortHeight, 0, {0, 0, 0}}
+        camera  { 
+                updater,
+                Width,
+                Height,
+                ViewPortDistance,
+                ViewPortWidth,
+                ViewPortHeight,
+                0,
+                {0, 0, 0}
+                }
 {
     image.create(camera.get_width(), camera.get_height(), sf::Color::White);
 
@@ -260,16 +269,19 @@ void MaRasterizer::draw_model(const Model& model)
 
 void MaRasterizer::draw_instance(const Instance& instance)
 {
-    for (const auto& triangle : instance.model.triangles)
+    const Model& model = instance.get_model();
+    const Mat4f& instance_transform = instance.get_instance_transform();
+
+    for (const auto& triangle : instance.get_model().triangles)
     {
-        draw_triangle(  transform_point(instance.transform_matrix,
-                                        instance.model.vertices[triangle.a]),
+        draw_triangle(  transform_point(instance_transform,
+                                        model.vertices[triangle.a]),
 
-                        transform_point(instance.transform_matrix,
-                                        instance.model.vertices[triangle.b]),
+                        transform_point(instance_transform,
+                                        model.vertices[triangle.b]),
 
-                        transform_point(instance.transform_matrix,
-                                        instance.model.vertices[triangle.c]),
+                        transform_point(instance_transform,
+                                        model.vertices[triangle.c]),
                         
                         triangle.clr);
     }
@@ -290,8 +302,6 @@ void MaRasterizer::render_scene()
 {
     sf::Texture texture;
 
-
-     //unsigned int microseconds = 1;
     sf::Sprite sprite;
 
     while (window.isOpen())
@@ -312,7 +322,6 @@ void MaRasterizer::render_scene()
         window.clear();
         window.draw(sprite);
         window.display();
-        //usleep(microseconds);
     }
 }
 

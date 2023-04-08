@@ -2,8 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <Homogeneous.hpp>
+#include <Updater.hpp>
 
-class Camera
+class Camera : public Updatable
 {
 // [MEMBERS]
 
@@ -42,6 +43,7 @@ public:
 
     Camera
         (
+            Updater& updater,
             int Width = 1000,
             int Height = 1000,
             float ViewPortDistance = 1,
@@ -73,7 +75,7 @@ public:
 
 // [update]
 
-    void update();
+    void update() override;
 
     void update_camera_transform();
 

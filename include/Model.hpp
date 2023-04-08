@@ -4,6 +4,7 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 #include <Homogeneous.hpp>
+#include <Updater.hpp>
 
 // union of vertices and triangles
 struct Model
@@ -22,68 +23,75 @@ struct Model
     Model() = delete;
 };
 
-struct Instance
+class Instance : public Updatable
 {
 // [members]
 
-    const Model& model;
+    const Model& m_model;
     
-    float scale{1};
-    float rotate_angle{0};
-    sf::Vector3f position{0, 0, 0};
+    float m_scale{1};
+    float m_angle{0};
+    sf::Vector3f m_position{0, 0, 0};
 
-    Mat4f transform_matrix;
-    bool is_need_update{true};
+    Mat4f instance_transform;
+
+public:
 
 // [functions]
 
-    void set_position(const sf::Vector3f& vec)
-    {
-        is_need_update = true;
-        position = vec;
-    }
+// [ctor]
 
-    void set_rotation(float phi)
-    {
-        is_need_update = true;
-        rotate_angle = phi;
-    };
-
-    void set_scale(float scale_)
-    {
-        is_need_update = true;
-        scale = scale_;
-    };
-
-    void update_transform()
-    {
-        if (is_need_update)
-        {
-            transform_matrix =  create_translation_matrix(position)
-                                *
-                                create_rotation_y_matrix(deg2rad(rotate_angle))
-                                *
-                                create_scale_matrix(scale);
-
-            is_need_update = false;
-        }
-    }
-
-    sf::Vector3f transform(const sf::Vector3f vec) const;
-    sf::Vector3f rotate_y(const sf::Vector3f vec) const;
-
-    Instance(const Model& model_, float scale_, float phi, const sf::Vector3f pos)
+    Instance(   Updater& updater,
+                const Model& model,
+                float scale,
+                float angle,
+                const sf::Vector3f position)
     :
-        model{model_},
-        scale{scale_},
-        rotate_angle{phi},
-        position{pos}
+        Updatable{updater},
+        m_model{model},
+        m_scale{scale},
+        m_angle{angle},
+        m_position{position}
     {
-        transform_matrix << 0, 0, 0, 0,
-                            0, 0, 0, 0,
-                            0, 0, 0, 0,
-                            0, 0, 0, 0;
+        update();
     };
+
+// [setters]
+
+    void set_position(const sf::Vector3f& position)
+    {
+        m_position = position;
+        need_update();
+    }
+
+    void set_rotation(float angle)
+    {
+        m_angle = angle;
+        need_update();
+    };
+
+    void set_scale(float scale)
+    {
+        m_scale = scale;
+        need_update();
+    };
+
+// [getters]
+
+const Model& get_model() const { return m_model; }
+
+const Mat4f& get_instance_transform() const { return instance_transform; }
+
+// [update]
+
+    void update() override
+    {
+        instance_transform =    create_translation_matrix(m_position)
+                                *
+                                create_rotation_y_matrix(deg2rad(m_angle))
+                                *
+                                create_scale_matrix(m_scale);
+    }
 };
 
 extern const Model cube;
