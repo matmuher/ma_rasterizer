@@ -125,6 +125,18 @@ In program we have a series of transformations, to be exact:
 
 Remove from scene objects that are out of camera
 
+*Steps of implementation*
+
+1) Add bounding boxes (for simplicity - spheres) to instances
+2) Check whether sphere is in view field (with checking there realation to view planes):
+    * fully - draw
+    * fully not - dont draw
+    * partially - check 3)
+3) If it is partially - check every triangle.
+   Triangles that are crossed by view field border should 
+   be divided into triangles, that completely in or
+   completely out of view field
+
 ### V. Remove hidden surface
 
 Remove surfaces that are behind other surfaces in camera view

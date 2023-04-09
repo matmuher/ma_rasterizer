@@ -62,7 +62,12 @@ public:
 
 // [CONVERTION]
 
+// complete transformation to pixel array
 sf::Vector2i transform_point(   const Mat4f& instance_transform,
+                                const sf::Vector3f& point) const;
+
+// transformation to position in scene (instance transform + camera transform)
+sf::Vector3f map_to_scene(      const Mat4f& instance_transform,
                                 const sf::Vector3f& point) const;
 
 sf::Vector2i CanvasToPixel(const sf::Vector2i& cnvs_pnt) const;

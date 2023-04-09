@@ -32,6 +32,7 @@ public:
 
         Instance cube1{updater, cube, 1, 0, {-4, 0, -15}};
         Instance cube2{updater, cube, 2, 0, {4, 0, -15}};
+        exit(1);
 
         cube1.set_rotation(20*t);
 
@@ -48,11 +49,12 @@ public:
 
 int main()
 {
-    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, true);
+    // TODO add enum for render mode
+    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, false);
 
-    //test_rasterizer.update_scene();
-    // test_rasterizer.save_scene();
-    test_rasterizer.render_scene();
+    test_rasterizer.update_scene();
+    test_rasterizer.save_scene();
+    // test_rasterizer.render_scene();
 
     return 0;
 }

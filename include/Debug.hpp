@@ -7,6 +7,9 @@ std::ostream& operator<< (std::ostream& cout, sf::Vector2i P);
 std::ostream& operator<< (std::ostream& cout, sf::Vector2f P);
 std::ostream& operator<< (std::ostream& cout, sf::Vector3f P);
 
+struct Sphere;
+std::ostream& operator<< (std::ostream& cout, Sphere sphere);
+
 std::ostream& operator<< (std::ostream& cout, sf::Color clr);
 
 std::ostream& info();

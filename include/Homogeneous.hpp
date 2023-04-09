@@ -136,12 +136,8 @@ inline sf::Vector2i transform_point(const Mat4f& camera_transform,
                     instance_transform;
  
     Vec4f homogeneous_point_3d{point.x, point.y, point.z, 1};
-    info() << "Homogen3d: \n" << homogeneous_point_3d << "\n\n";
-
-    info() << "Todos transformations matrix: \n" << transform_mat << "\n\n";
 
     Vec3f homogeneous_point_2d = transform_mat * homogeneous_point_3d;
-    info() << "Homogen2d: \n" << homogeneous_point_2d << "\n\n";
 
     sf::Vector2f pixel_array_point_f =  homogeneous_to_cartesian_2d(
                                                                     homogeneous_point_2d(0),
@@ -152,7 +148,58 @@ inline sf::Vector2i transform_point(const Mat4f& camera_transform,
     return sf::Vector2i{int(pixel_array_point_f.x), int(pixel_array_point_f.y)};
 }
 
+inline sf::Vector3f transform_point(const Mat4f& camera_transform,
+                             const Mat4f& instance_transform,
+                             const sf::Vector3f& point)
+{
+    Mat4f transform_mat = camera_transform * instance_transform;
+
+    Vec4f homogeneous_point{point.x, point.y, point.z, 1};
+
+    Vec4f transformed_homogeneous_point= transform_mat * homogeneous_point;  
+
+    return sf::Vector3f{transformed_homogeneous_point(0),
+                        transformed_homogeneous_point(1),
+                        transformed_homogeneous_point(2)}; 
+}
+
 inline float deg2rad(float deg)
 {
     return deg / 180. * M_PI;
 }
+
+struct Sphere
+{
+    sf::Vector3f center;
+    float R;
+};
+
+inline float square(const sf::Vector3f& vec)
+{
+    return (vec.x*vec.x) + (vec.y*vec.y) + (vec.z*vec.z);
+}
+
+inline Sphere create_bounding_sphere(const std::vector<sf::Vector3f>& vertices)
+{
+    // center = mean(vertices)
+
+    sf::Vector3f center{};
+
+    for (const auto& vertex : vertices)
+    {
+        center += vertex;
+    }
+
+    center *= float(1. / vertices.size());
+
+    // radius = dist_to_farthest_vertex(vertices)
+
+    float R = 0;
+
+    for (const auto& vertex : vertices)
+    {
+        R = std::max(R, square(vertex - center));
+    }
+
+    return Sphere{center, sqrtf(R)};
+} 

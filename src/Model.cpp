@@ -1,8 +1,7 @@
 #include <Model.hpp>
 
-const Model cube =
+const Model cube
 {
-    .vertices =
     {
         { 1,  1,  1},
         {-1,  1,  1},
@@ -13,8 +12,6 @@ const Model cube =
         {-1, -1, -1},
         { 1, -1, -1}
     },
-
-    .triangles =
     {
         {0, 1, 2, sf::Color::Red},
         {0, 2, 3, sf::Color::Red},

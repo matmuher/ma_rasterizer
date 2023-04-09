@@ -272,6 +272,13 @@ void MaRasterizer::draw_instance(const Instance& instance)
     const Model& model = instance.get_model();
     const Mat4f& instance_transform = instance.get_instance_transform();
 
+    std::vector<sf::Vector3f> updated_vertices = model.vertices;
+
+    for (auto& vertex : updated_vertices)
+    {
+        vertex = map_to_scene(instance_transform, vertex);
+    }
+
     for (const auto& triangle : instance.get_model().triangles)
     {
         draw_triangle(  transform_point(instance_transform,

@@ -6,21 +6,40 @@
 #include <Homogeneous.hpp>
 #include <Updater.hpp>
 
+struct TriangleVertices
+{
+    int a, b, c;
+    sf::Color clr;
+};
+
 // union of vertices and triangles
 struct Model
 {
-    struct TriangleVertices
-    {
-        int a, b, c;
-        sf::Color clr;
-    };
+// [MEMBERS]
 
     std::vector<sf::Vector3f> vertices;
     std::vector<TriangleVertices> triangles;
+    Sphere bounding_sphere;
 
-    void move(sf::Vector3f move_vector);
+// [FUNCTIONS]
+
+// [ctors]
+
+    Model(  const std::vector<sf::Vector3f>& model_vertices,
+            const std::vector<TriangleVertices>& model_triangles)
+    :
+        vertices{model_vertices},
+        triangles{model_triangles},
+        bounding_sphere{create_bounding_sphere(vertices)}
+    {
+        info() << bounding_sphere << '\n';
+    }
 
     Model() = delete;
+
+// [others]
+
+
 };
 
 class Instance : public Updatable
@@ -64,11 +83,21 @@ public:
         need_update();
     }
 
+    void change_position(const sf::Vector3f& shift_position)
+    {
+        set_position(m_position + shift_position);
+    }
+
     void set_rotation(float angle)
     {
         m_angle = angle;
         need_update();
     };
+
+    void change_rotation(float shift_angle)
+    {
+        set_rotation(m_angle + shift_angle);
+    }
 
     void set_scale(float scale)
     {

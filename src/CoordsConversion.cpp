@@ -11,6 +11,14 @@ sf::Vector2i MaRasterizer::transform_point( const Mat4f& instance_transform,
                                 point);
 }
 
+sf::Vector3f MaRasterizer::map_to_scene(    const Mat4f& instance_transform,
+                                            const sf::Vector3f& point) const
+{
+    return ::transform_point(   camera.get_camera_transform(),
+                                instance_transform,
+                                point);    
+}
+
 sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt) const
 {
     return sf::Vector2i {

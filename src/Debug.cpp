@@ -1,4 +1,5 @@
 #include <Debug.hpp>
+#include <Homogeneous.hpp>
 
 std::ostream& operator<< (std::ostream& cout, sf::Vector2i P)
 {
@@ -13,6 +14,11 @@ std::ostream& operator<< (std::ostream& cout, sf::Vector3f P)
 std::ostream& operator<< (std::ostream& cout, sf::Vector2f P)
 {
     return cout << '(' << P.x << ',' << P.y << ')';
+}
+
+std::ostream& operator<< (std::ostream& cout, Sphere sphere)
+{
+    return cout << "Sphere: " << sphere.center << ", R = " << sphere.R;
 }
 
 std::ostream& operator<< (std::ostream& cout, sf::Color clr)
