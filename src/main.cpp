@@ -28,6 +28,10 @@ public:
 
     virtual void update_scene()
     {
+        Plane plane1{{0, 0, -1}, 1};
+        info() << "dist" << compute_dist({0, 0, -3}, plane1) << '\n';
+        exit(1);
+
         static float t = 0;
 
         Instance cube1{updater, cube, 1, 0, {-4, 0, -15}};

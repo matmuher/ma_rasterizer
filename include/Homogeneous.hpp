@@ -179,6 +179,20 @@ inline float square(const sf::Vector3f& vec)
     return (vec.x*vec.x) + (vec.y*vec.y) + (vec.z*vec.z);
 }
 
+inline float dot_product(const sf::Vector3f& lhs, const sf::Vector3f& rhs)
+{
+    float result = (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z);
+
+    info() << lhs << " * " << rhs << " = " << result << "\n";
+
+    return result;
+}
+
+inline sf::Vector3f normalize(const sf::Vector3f& vec)
+{
+    return vec * (1 / sqrtf(dot_product(vec, vec)));
+}
+
 inline Sphere create_bounding_sphere(const std::vector<sf::Vector3f>& vertices)
 {
     // center = mean(vertices)
@@ -202,4 +216,23 @@ inline Sphere create_bounding_sphere(const std::vector<sf::Vector3f>& vertices)
     }
 
     return Sphere{center, sqrtf(R)};
-} 
+}
+
+struct Plane
+{
+    sf::Vector3f norm;
+    float d; // distance from origin
+
+    Plane(const sf::Vector3f& norm_, float d_)
+    :
+        norm{normalize(norm_)},
+        d{d_}
+    {
+        info() << "norm: " << norm << '\n';
+    }
+};
+
+inline float compute_dist(const sf::Vector3f point, const Plane& plane)
+{
+    return dot_product(point, plane.norm) - plane.d;
+}
