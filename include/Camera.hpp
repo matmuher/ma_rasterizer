@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include <Homogeneous.hpp>
 #include <Updater.hpp>
@@ -22,6 +23,10 @@ class Camera : public Updatable
         const float m_ViewPortDistance;
         const float m_ViewPortWidth;
         const float m_ViewPortHeight;
+
+    // field of view planes
+
+        std::vector<Plane> fov_planes;
 
 // [camera transform]
 
@@ -53,6 +58,23 @@ public:
             sf::Vector3f position = sf::Vector3f{0, 0, 0} 
         );
 
+    // w - ViewPortWidth
+    // h - ViewPortHeight
+    // d - ViewPortDistance
+    std::vector<Plane> init_fov_planes(float w, float h, float d)
+    {
+        std::vector<Plane> fov_planes;
+        fov_planes.reserve(5);
+
+        fov_planes.emplace_back(sf::Vector3f{0, 0, -d}, d);
+        fov_planes.emplace_back(sf::Vector3f{ d, 0, -w/2}, 0); // left
+        fov_planes.emplace_back(sf::Vector3f{-d, 0, -w/2}, 0); // right
+        fov_planes.emplace_back(sf::Vector3f{0, -d, -h/2}, 0); // top
+        fov_planes.emplace_back(sf::Vector3f{0,  d, -h/2}, 0); // bottom
+
+        return fov_planes;
+    }
+
 // [setters]
 
     void set_rotation(float angle);
@@ -72,6 +94,8 @@ public:
     float get_vp_width() const;
     float get_vp_height() const;
     float get_vp_dist() const;
+
+    const std::vector<Plane>& get_fov_planes() const;
 
 // [update]
 

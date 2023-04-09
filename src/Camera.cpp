@@ -22,6 +22,7 @@ Camera::Camera
         m_ViewPortDistance{ViewPortDistance},
         m_ViewPortWidth{ViewPortWidth},
         m_ViewPortHeight{ViewPortHeight},
+        fov_planes{init_fov_planes(ViewPortWidth, ViewPortHeight, ViewPortDistance)},
         m_angle{angle},
         m_position{position}
 {
@@ -79,6 +80,11 @@ float Camera::get_vp_height() const
 float Camera::get_vp_dist() const
 {
     return m_ViewPortDistance;
+}
+
+const std::vector<Plane>& Camera::get_fov_planes() const
+{
+    return fov_planes;
 }
 
 // [update]

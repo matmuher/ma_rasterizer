@@ -272,12 +272,32 @@ void MaRasterizer::draw_instance(const Instance& instance)
     const Model& model = instance.get_model();
     const Mat4f& instance_transform = instance.get_instance_transform();
 
+    Sphere bounding_sphere = instance.get_model().bounding_sphere;
+    
+    sf::Vector3f updated_center = map_to_scene(instance_transform, bounding_sphere.center);
+
+    const std::vector<Plane>& fov_planes = camera.get_fov_planes();
+
+    float dist = 0;
+    for (const auto& plane : fov_planes)
+    {
+        dist = std::min(compute_dist(updated_center, plane), dist);
+    }
+
+    if (dist < -bounding_sphere.R)
+    {
+        info() << "instance is out of view field: " << dist << '\n';
+    }
+    exit(1);
+
     std::vector<sf::Vector3f> updated_vertices = model.vertices;
 
     for (auto& vertex : updated_vertices)
     {
         vertex = map_to_scene(instance_transform, vertex);
     }
+
+
 
     for (const auto& triangle : instance.get_model().triangles)
     {
