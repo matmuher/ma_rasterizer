@@ -2,6 +2,7 @@
 
 #include <string>
 #include <array>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include <Camera.hpp>
 #include <Model.hpp>
@@ -66,15 +67,11 @@ public:
 sf::Vector2i transform_point(   const Mat4f& instance_transform,
                                 const sf::Vector3f& point) const;
 
-// transformation to position in scene (instance transform + camera transform)
-sf::Vector3f map_to_scene(      const Mat4f& instance_transform,
-                                const sf::Vector3f& point) const;
-
 sf::Vector2i CanvasToPixel(const sf::Vector2i& cnvs_pnt) const;
 sf::Vector2i ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const;
 sf::Vector2i ViewPortToPixel(const sf::Vector2f& view_port_pnt) const;
 
-// [PROJECT ON VIEW PORT]
+// [PROJECT ON VIEW PORT : deprecated]
 
 inline float project_component(float component, float z) const;
 sf::Vector2f ProjectOnViewPort(const sf::Vector3f& pnt) const;
@@ -111,3 +108,38 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2);
 void sort_by_y( sf::Vector2i& P0, float& h0,
                 sf::Vector2i& P1, float& h1,
                 sf::Vector2i& P2, float& h2);
+
+// [CLIPPING]
+
+
+// transformation to position in scene (instance transform + camera transform)
+sf::Vector3f map_to_scene(  const Camera& camera,    
+                            const Mat4f& instance_transform,
+                            const sf::Vector3f& point);
+
+inline bool is_bounding_sphere_out_of_fov( const Camera& camera,
+                            const Instance& instance)
+{
+    Sphere bounding_sphere = instance.get_model().bounding_sphere;
+    const Mat4f& instance_transform = instance.get_instance_transform();
+
+    sf::Vector3f updated_center = map_to_scene (camera,
+                                                instance_transform,
+                                                bounding_sphere.center);
+
+    const std::vector<Plane>& fov_planes = camera.get_fov_planes();
+
+    float dist = 0;
+    for (const auto& plane : fov_planes)
+    {
+        dist = std::min(compute_dist(updated_center, plane), dist);
+    }
+
+    if (dist < -bounding_sphere.R)
+    {
+        info() << "instance is out of view field: " << dist << '\n';
+        return true;
+    }
+
+    return false;
+}

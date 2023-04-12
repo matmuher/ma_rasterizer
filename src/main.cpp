@@ -28,12 +28,13 @@ public:
 
     virtual void update_scene()
     {
-        Instance cube1{updater, cube, 1, 0, {0, 0, 0}};
-        //Instance cube2{updater, cube, 2, 0, {4, 0, -15}};
+        Instance cube1{updater, cube, 1, 0, {4, 0, 15}};
+        Instance cube2{updater, cube, 2, 0, {4, 0, -15}};
        
         updater.update_all();
 
         draw_instance(cube1);
+        draw_instance(cube2);
     }
 };
 
