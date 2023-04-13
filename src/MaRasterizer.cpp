@@ -73,6 +73,26 @@ void sort_by_y( sf::Vector2i& P0, float& h0,
     }
 }
 
+void sort_by_y( ExtendedVertex& P0_ext,
+                ExtendedVertex& P1_ext,
+                ExtendedVertex& P2_ext)
+{
+    if (!is_less_by_y(P0_ext.vec, P1_ext.vec))
+    {
+        std::swap(P0_ext, P1_ext);
+    }
+
+    if (!is_less_by_y(P1_ext.vec, P2_ext.vec))
+    {
+        std::swap(P1_ext, P2_ext);
+    }
+
+    if (!is_less_by_y(P0_ext.vec, P1_ext.vec))
+    {
+        std::swap(P0_ext, P1_ext);
+    }
+}
+
 // [DRAWING]
 
 inline bool MaRasterizer::is_in_borders(int x, int y) const

@@ -150,7 +150,9 @@ void determine_side(Dict<Attribute, AttributeValues>*& left_ptr,
                     Dict<Attribute, AttributeValues>& attr02,
                     int middle_index)
 {
-    if (attr012["x"][middle_index] < attr02["x"][middle_index])
+    assert(middle_index > 0 && "Vertices shouldnt be in the same place");
+
+    if (attr012["x"][middle_index-1] < attr02["x"][middle_index-1])
     {
         left_ptr = &attr012; 
         right_ptr = &attr02;
@@ -160,6 +162,32 @@ void determine_side(Dict<Attribute, AttributeValues>*& left_ptr,
         left_ptr = &attr02;
         right_ptr = &attr012;
     }
+}
+
+Dict<Attribute, float> get_point_attributes (   int idep_shift,
+                                                const Dict<Attribute, AttributeValues>& attributes)
+{
+    Dict<Attribute, float> ret;
+
+    for (auto& [attribute, values] : attributes)
+    {
+        ret[attribute] = values[idep_shift];
+    }
+
+    return ret;
+}
+
+ void MaRasterizer::rasterize_triangle(   ExtendedVertex P0_ext,
+                            ExtendedVertex P1_ext,
+                            ExtendedVertex P2_ext,
+                            sf::Color color)
+{
+    sort_by_y(P0_ext, P1_ext, P2_ext);
+
+    rasterize_triangle( P0_ext.vec, P0_ext.attrs,
+                        P1_ext.vec, P1_ext.attrs,
+                        P2_ext.vec, P2_ext.attrs,
+                        color);
 }
 
 void MaRasterizer::rasterize_triangle(
@@ -200,27 +228,37 @@ void MaRasterizer::rasterize_triangle(
 
     determine_side( left_ptr, right_ptr,
                     attr012, attr02,
-                    P1.y - P0.y);
+                    (P2.y - P0.y) / 2);
 
     Dict<Attribute, AttributeValues>& attr_left = *left_ptr;
     Dict<Attribute, AttributeValues>& attr_right = *right_ptr;
 
     for (int y_walker = P0.y; y_walker < P2.y; ++y_walker)
     {
+        info() << "YWalker: " << y_walker << '\n';
+
         int y_shift = y_walker - P0.y;
 
         int x_l = attr_left["x"][y_shift];
         int x_r = attr_right["x"][y_shift];
 
-        std::vector<float> h_horizontal = interpolate(
+        Dict<Attribute, AttributeValues> horizontal_attr =
+                                interpolate_attributes  (
                                                     x_l,
                                                     x_r,
-                                                    attr_left["h"][y_shift],
-                                                    attr_right["h"][y_shift]);
-
-        head_vector(h_horizontal);
+                                                    get_point_attributes(y_shift, attr_left),
+                                                    get_point_attributes(y_shift, attr_right)
+                                                        );
 
         for (int x = x_l; x < x_r; ++x)
-            setPixel(x, y_walker, shade(color, h_horizontal[x - x_l]));
+        {
+     
+            if (z_buffer.getVal(x, y_walker) < horizontal_attr["z"][x - x_l])
+            {
+                z_buffer.setVal(x, y_walker, horizontal_attr["z"][x - x_l]);
+
+                setPixel(x, y_walker, shade(color, horizontal_attr["h"][x - x_l]));
+            }
+        }
     }
 }

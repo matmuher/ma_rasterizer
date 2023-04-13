@@ -25,9 +25,24 @@ struct ScreenSubstrate
         vec(Height, std::vector<float>(Width, filler))
     {}
 
-    void setPixel(int x, int y, float val)
+    void setVal(size_t x, size_t y, float val)
     {
-        vec[y][x] = val;
+        if (x < vec[0].size() &&
+            y < vec.size())
+        {
+            vec[y][x] = val;
+        }
+    }
+
+    float getVal(size_t x, size_t y) const
+    {
+        if (x < vec[0].size() &&
+            y < vec.size())
+        {
+            return vec[y][x];
+        }
+
+        return 0;
     }
 };
 
@@ -58,6 +73,14 @@ private:
 
     RenderMode m_mode;
 
+// [internal functions]
+
+    // unsafe! accepts only sorted by y points
+    void rasterize_triangle(sf::Vector2i P0, Dict<Attribute, float> P0_attr,
+                            sf::Vector2i P1, Dict<Attribute, float> P1_attr,
+                            sf::Vector2i P2, Dict<Attribute, float> P2_attr,
+                            sf::Color color);
+
 public:
 
 // [CTOR]
@@ -86,9 +109,9 @@ public:
                         sf::Vector2i P2, float h2,
                         sf::Color color);
 
-    void rasterize_triangle(    sf::Vector2i P0, Dict<Attribute, float> P0_attr,
-                                sf::Vector2i P1, Dict<Attribute, float> P1_attr,
-                                sf::Vector2i P2, Dict<Attribute, float> P2_attr,
+    void rasterize_triangle(    ExtendedVertex P0_ext,
+                                ExtendedVertex P1_ext,
+                                ExtendedVertex P2_ext,
                                 sf::Color color);
 
     void draw_instance_complete(const Instance& instance);
@@ -128,3 +151,7 @@ void sort_by_y(sf::Vector2i& P0, sf::Vector2i& P1, sf::Vector2i& P2);
 void sort_by_y( sf::Vector2i& P0, float& h0,
                 sf::Vector2i& P1, float& h1,
                 sf::Vector2i& P2, float& h2);
+
+void sort_by_y( ExtendedVertex& P0_ext,
+                ExtendedVertex& P1_ext,
+                ExtendedVertex& P2_ext);

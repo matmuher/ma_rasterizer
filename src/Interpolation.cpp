@@ -83,6 +83,19 @@ Dict<Attribute, AttributeValues> interpolate_attributes(
     return interpolate_attributes(IntRange{indep_a, indep_b}, create_range_dict(dep_a, dep_b));
 }
 
+Dict<Attribute, AttributeValues> create_empty_attributes
+                    (const Dict<Attribute, FloatRange>& attributes)
+{
+    Dict<Attribute, AttributeValues> ret;
+
+    for (const auto& [attribute, range] : attributes)
+    {
+        ret[attribute].clear();
+    }
+
+    return ret;
+}
+
 Dict<Attribute, AttributeValues> interpolate_attributes(
                                                         IntRange indep,
                                                         Dict<Attribute, FloatRange> dep
@@ -93,7 +106,7 @@ Dict<Attribute, AttributeValues> interpolate_attributes(
     if (indep.a == indep.b)
     {
         info() << "Independent range is degenerate\n";
-        return {};
+        return create_empty_attributes(dep);
     }
     int indep_range = abs(indep.a - indep.b) + 1;
 

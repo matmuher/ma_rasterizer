@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <SFML/Graphics.hpp>
 
 struct FloatRange
 {
@@ -19,6 +20,12 @@ using AttributeValues = std::vector<float>;
 
 template<class KeyType, class ValType >
 using Dict = std::map<KeyType, ValType>;
+
+struct ExtendedVertex
+{
+    sf::Vector2i vec;
+    Dict<Attribute, float> attrs;
+};
 
 std::vector<float> interpolate(int indep_st, int indep_end,
                                 float dep_st, float dep_end);
