@@ -4,13 +4,14 @@
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
 #include <Clipping.hpp>
+#include <CoordsTransform.hpp>
 
 // [CTOR]
 
 MaRasterizer::MaRasterizer( int Width, int Height,
                             float ViewPortDistance,
                             float ViewPortWidth, float ViewPortHeight, 
-                            bool window_mode)
+                            RenderMode mode)
     :
         camera  { 
                 updater,
@@ -27,7 +28,7 @@ MaRasterizer::MaRasterizer( int Width, int Height,
 
     camera.update();
 
-    if (window_mode)
+    if (mode == RenderMode::Window)
         window.create(sf::VideoMode(camera.get_width(), camera.get_height()), "ma_rasterizer");
 }
 
@@ -84,44 +85,6 @@ void MaRasterizer::setPixel(int x, int y, const sf::Color& color)
     {
         image.setPixel(x, y, color);
     }
-}
-
-// general interpolation function:
-/*
-        ^ (dep)
-        |
-        |        ******
-        |   *****
-        |***
-        - - - - - - - > (indep)
-*/
-std::vector<float>  MaRasterizer::interpolate(int indep_st, int indep_end,
-                                              float dep_st, float dep_end) const
-{
-    if (indep_st == indep_end)
-        return {};
-
-    std::vector<float> dep_values;
-
-        // let i0 = 0, i1 = 1 -> all in all 2 pixels
-        // i.e. (i1 - i0 + 1)
-    int range_len_indep = indep_end - indep_st;
-    float range_len_dep   = dep_end - dep_st;
-
-    dep_values.reserve(range_len_indep);
-
-        // slope shows how much should we move in dependent-axis
-        // when move one step in independent axis
-    float slope = range_len_dep / range_len_indep; 
-    
-    float dep_walker = dep_st;
-    for (int indep_walker = 0; indep_walker <= range_len_indep; ++indep_walker)
-    {
-        dep_walker += slope;
-        dep_values.push_back(dep_walker);
-    }
-
-    return dep_values;
 }
 
 void MaRasterizer::draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color)
@@ -260,7 +223,6 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
 void MaRasterizer::draw_instance(const Instance& instance)
 {
     const Model& model = instance.get_model();
-    const Mat4f& instance_transform = instance.get_instance_transform();
 
     if (is_bounding_sphere_out_of_fov(camera, instance))
     {
@@ -270,19 +232,22 @@ void MaRasterizer::draw_instance(const Instance& instance)
     std::vector<sf::Vector3f> updated_vertices = model.vertices;
     for (auto& vertex : updated_vertices)
     {
-        vertex = map_to_scene(camera, instance_transform, vertex);
+        vertex = transformToScene(camera, instance, vertex);
     }
 
     for (const auto& triangle : instance.get_model().triangles)
     {
-        draw_triangle(  transform_point(instance_transform,
-                                        model.vertices[triangle.a]),
+        draw_triangle(  transformCompletely(camera,
+                                            instance,
+                                            model.vertices[triangle.a]),
 
-                        transform_point(instance_transform,
-                                        model.vertices[triangle.b]),
+                        transformCompletely(camera,
+                                            instance,
+                                            model.vertices[triangle.b]),
 
-                        transform_point(instance_transform,
-                                        model.vertices[triangle.c]),
+                        transformCompletely(camera,
+                                            instance,
+                                            model.vertices[triangle.c]),
                         
                         triangle.clr);
     }

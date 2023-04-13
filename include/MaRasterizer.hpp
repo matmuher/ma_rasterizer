@@ -4,10 +4,17 @@
 #include <array>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <Interpolation.hpp>
 #include <Camera.hpp>
 #include <Model.hpp>
-#include <Homogeneous.hpp>
+#include <Geometry.hpp>
 #include <Updater.hpp>
+
+enum class RenderMode
+{
+    Window,
+    Picture
+};
 
 class MaRasterizer
 {
@@ -36,16 +43,13 @@ public:
                     float ViewPortDistance = 1.,
                     float ViewPortWidth = 1.,
                     float ViewPortHeight = 1., 
-                    bool window_mode = false);
+                    RenderMode mode = RenderMode::Picture);
     
 // [DRAWING]
 
     inline bool is_in_borders(int x, int y) const;
 
     void setPixel(int x, int y, const sf::Color& color);
-
-    std::vector<float> interpolate(int indep_st, int indep_end,
-                                   float dep_st, float dep_end) const;
 
     void draw_line(sf::Vector2i P0, sf::Vector2i P1, sf::Color color);
     
@@ -59,12 +63,6 @@ public:
                         sf::Color color);
 
     void draw_instance(const Instance& instance);
-
-// [CONVERTION]
-
-// complete transformation to pixel array
-sf::Vector2i transform_point(   const Mat4f& instance_transform,
-                                const sf::Vector3f& point) const;
 
 // [SCENE MANAGING]
 

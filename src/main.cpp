@@ -16,20 +16,20 @@ public:
                     float ViewPortDistance = 1.,
                     float ViewPortWidth = 1.,
                     float ViewPortHeight = 1., 
-                    bool window_mode = false)
+                    RenderMode mode = RenderMode::Picture)
         : MaRasterizer(
                         Width,
                         Height,
                         ViewPortDistance,
                         ViewPortWidth,
                         ViewPortHeight,
-                        window_mode
+                        mode
                         ) {}
 
     virtual void update_scene()
     {
         Instance cube1{updater, cube, 1, 0, {15, 0, 15}};
-        Instance cube2{updater, cube, 2, 0, {9, 0, -15}};
+        Instance cube2{updater, cube, 2, 0, {4, 0, -15}};
        
         updater.update_all();
 
@@ -41,7 +41,7 @@ public:
 int main()
 {
     // TODO add enum for render mode
-    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, false);
+    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, RenderMode::Picture);
 
     test_rasterizer.update_scene();
     test_rasterizer.save_scene();

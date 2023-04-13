@@ -1,15 +1,14 @@
 #include <Clipping.hpp>
-
+#include <CoordsTransform.hpp>
 
 bool is_bounding_sphere_out_of_fov( const Camera& camera,
                             const Instance& instance)
 {
     Sphere bounding_sphere = instance.get_model().bounding_sphere;
-    const Mat4f& instance_transform = instance.get_instance_transform();
 
-    sf::Vector3f updated_center = map_to_scene (camera,
-                                                instance_transform,
-                                                bounding_sphere.center);
+    sf::Vector3f updated_center = transformToScene (camera,
+                                                    instance,
+                                                    bounding_sphere.center);
 
     const std::vector<Plane>& fov_planes = camera.get_fov_planes();
 
