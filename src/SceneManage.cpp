@@ -46,6 +46,13 @@ void MaRasterizer::process_key(sf::Keyboard::Key key)
 
 void MaRasterizer::render_scene()
 {
+    if (mode == RenderMode::Picture)
+    {
+        update_scene();
+        save_scene();
+        return;
+    }
+
     sf::Texture texture;
     sf::Sprite sprite;
 
