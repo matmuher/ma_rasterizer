@@ -62,18 +62,20 @@ int main(int argc, const char* argv[])
     // TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, mode);
     // test_rasterizer.render_scene();
 
-    std::vector<attribute_values> ret = 
-                            interpolate_attributes( {0, 3}, 
+    Dict<Attribute, AttributeValues> ret = 
+                            interpolate_attributes( {0, 3},
                                                     {
-                                                        {0., 3.}, 
-                                                        {1., 2.},
-                                                        {-1., -2.}
+                                                    {"a", {0., 3.}}, 
+                                                    {"b", {1., 2.}},
+                                                    {"z", {-1., -2.}}
                                                     }
                                                     );
 
-    for (const auto& attribute_values : ret)
+    for (const auto& [attribute, attribute_values] : ret)
     {
         auto& outs = info();
+        outs << attribute << ": ";
+
         for (float elem : attribute_values)
         {
             outs << elem << ' ';

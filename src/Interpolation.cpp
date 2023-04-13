@@ -40,25 +40,28 @@ std::vector<float>  interpolate(int indep_st, int indep_end,
     return dep_values;
 }
 
-std::vector<float> compute_slopes(  int indep_range,
-                                    std::vector<float_range> dep)
+Dict<Attribute, float> compute_slopes(
+                                        int indep_range,
+                                        Dict<Attribute, FloatRange> dep
+                                    )
 {
     int attributes_num = dep.size();
 
-    std::vector<float> slopes;
-    slopes.reserve(attributes_num);
+    Dict<Attribute, float> slopes;
 
-    for (int attr_id = 0; attr_id < attributes_num; ++attr_id)
+    for (const auto& [attribute, attr_range] : dep)
     {
         // non zero, as we checked for degenerate case
-        slopes.emplace_back((dep[attr_id].b - dep[attr_id].a) / (indep_range-1));
+        slopes[attribute] = (dep[attribute].b - dep[attribute].a) / (indep_range-1);
     }
 
     return slopes;
 }
 
-std::vector<attribute_values> interpolate_attributes( int_range indep,
-                                                      std::vector<float_range> dep)
+Dict<Attribute, AttributeValues> interpolate_attributes(
+                                                        IntRange indep,
+                                                        Dict<Attribute, FloatRange> dep
+                                                        )
 {
     assert(!dep.empty() && "Dependents are not provided\n");
 
@@ -69,17 +72,16 @@ std::vector<attribute_values> interpolate_attributes( int_range indep,
     }
     int indep_range = abs(indep.a - indep.b) + 1;
 
-    std::vector<float> slopes = compute_slopes(indep_range, dep);
+    Dict<Attribute, float> slopes = compute_slopes(indep_range, dep);
 
     int attributes_num = dep.size();
-    std::vector<attribute_values> ret(  attributes_num,
-                                        attribute_values(indep_range, 0));
+    Dict<Attribute, AttributeValues> ret;
 
     for (int indep_walker = 0; indep_walker < indep_range; ++indep_walker)
     {
-        for (int attr_id = 0; attr_id < attributes_num; ++attr_id)
+        for (const auto& [attribute, attr_range] : dep)
         {
-            ret[attr_id][indep_walker] = dep[attr_id].a + slopes[attr_id] * indep_walker;
+            ret[attribute].push_back(dep[attribute].a + slopes[attribute] * indep_walker);
         }
     }
 

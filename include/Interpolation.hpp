@@ -1,22 +1,29 @@
 #pragma once
 
 #include <vector>
+#include <map>
+#include <string>
 
-struct float_range
+struct FloatRange
 {
     float a, b;
 };
 
-struct int_range
+struct IntRange
 {
     int a, b;
 };
 
-using attribute_values = std::vector<float>;
+using Attribute = std::string;
+using AttributeValues = std::vector<float>;
 
+template<class KeyType, class ValType >
+using Dict = std::map<KeyType, ValType>;
 
 std::vector<float> interpolate(int indep_st, int indep_end,
                                 float dep_st, float dep_end);
 
-std::vector<attribute_values> interpolate_attributes( int_range indep,
-                                                      std::vector<float_range> dep);
+Dict<Attribute, AttributeValues> interpolate_attributes(
+                                                        IntRange indep,
+                                                        Dict<Attribute, FloatRange> dep
+                                                        );
