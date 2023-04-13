@@ -45,8 +45,6 @@ Dict<Attribute, float> compute_slopes(
                                         Dict<Attribute, FloatRange> dep
                                     )
 {
-    int attributes_num = dep.size();
-
     Dict<Attribute, float> slopes;
 
     for (const auto& [attribute, attr_range] : dep)
@@ -56,6 +54,33 @@ Dict<Attribute, float> compute_slopes(
     }
 
     return slopes;
+}
+
+Dict<Attribute, FloatRange> create_range_dict(  const Dict<Attribute, float>& lhs,
+                                                const Dict<Attribute, float>& rhs)
+{
+    Dict<Attribute, FloatRange> ret;
+
+    for (const auto& [attribute, lhs_val] : lhs)
+    {
+        assert ((rhs.find(attribute) != rhs.end()) && "Attribute dicts of vertices dont match");
+
+        float rhs_val = rhs.at(attribute);
+        ret[attribute] = FloatRange{lhs_val, rhs_val};
+    }
+
+    return ret;
+}
+
+
+Dict<Attribute, AttributeValues> interpolate_attributes(
+                                                        int indep_a,
+                                                        int indep_b,
+                                                        Dict<Attribute, float> dep_a,
+                                                        Dict<Attribute, float> dep_b
+                                                        )
+{
+    return interpolate_attributes(IntRange{indep_a, indep_b}, create_range_dict(dep_a, dep_b));
 }
 
 Dict<Attribute, AttributeValues> interpolate_attributes(
@@ -74,7 +99,6 @@ Dict<Attribute, AttributeValues> interpolate_attributes(
 
     Dict<Attribute, float> slopes = compute_slopes(indep_range, dep);
 
-    int attributes_num = dep.size();
     Dict<Attribute, AttributeValues> ret;
 
     for (int indep_walker = 0; indep_walker < indep_range; ++indep_walker)

@@ -46,8 +46,9 @@ void MaRasterizer::process_key(sf::Keyboard::Key key)
 
 void MaRasterizer::render_scene()
 {
-    if (mode == RenderMode::Picture)
+    if (m_mode == RenderMode::Picture)
     {
+        info() << "MEOW\n";
         update_scene();
         save_scene();
         return;

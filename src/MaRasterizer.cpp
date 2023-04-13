@@ -22,17 +22,12 @@ MaRasterizer::MaRasterizer( int Width, int Height,
                 ViewPortHeight,
                 0,
                 {0, 0, 0}
-                }
+                },
+        z_buffer{Width, Height, 0.},
+        m_mode{mode}
 {
     image.create(camera.get_width(), camera.get_height(), sf::Color::White);
     
-    z_buffer.reserve(camera.get_height());
-    for (int y = 0; y < camera.get_height(); ++y)
-    {
-        std::vector<float> row(camera.get_width(), INFINITY);
-        z_buffer.push_back(std::move(row));
-    }
-
     camera.update();
 
     if (mode == RenderMode::Window)
@@ -243,7 +238,6 @@ void MaRasterizer::draw_instance_clip(const Instance& instance)
             
             for (const auto& clipped_triangle : clipped_triangles)
             {
-
                 draw_triangle(  transformSceneToPixelArray( camera,
                                                             clipped_triangle.a),
 

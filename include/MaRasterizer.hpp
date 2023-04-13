@@ -16,6 +16,21 @@ enum class RenderMode
     Picture
 };
 
+struct ScreenSubstrate
+{
+    std::vector<std::vector<float>> vec;
+
+    ScreenSubstrate(int Width, int Height, float filler)
+    :
+        vec(Height, std::vector<float>(Width, filler))
+    {}
+
+    void setPixel(int x, int y, float val)
+    {
+        vec[y][x] = val;
+    }
+};
+
 class MaRasterizer
 {
 protected:
@@ -34,16 +49,14 @@ private:
 
 // [implementation details]
 
-    using Matrix2f = std::vector<std::vector<float>>;
-
     mutable sf::RenderWindow window;
 
     sf::Image image;
-    Matrix2f z_buffer;
+    ScreenSubstrate z_buffer;
 
     const std::string file_name = "querida_triangulo.png"; 
 
-    RenderMode mode;
+    RenderMode m_mode;
 
 public:
 
@@ -53,7 +66,7 @@ public:
                     int Height = 1000,
                     float ViewPortDistance = 1.,
                     float ViewPortWidth = 1.,
-                    float ViewPortHeight = 1., 
+                    float ViewPortHeight = 1.,
                     RenderMode mode = RenderMode::Picture);
     
 // [DRAWING]
@@ -72,6 +85,11 @@ public:
                         sf::Vector2i P1, float h1,
                         sf::Vector2i P2, float h2,
                         sf::Color color);
+
+    void rasterize_triangle(    sf::Vector2i P0, Dict<Attribute, float> P0_attr,
+                                sf::Vector2i P1, Dict<Attribute, float> P1_attr,
+                                sf::Vector2i P2, Dict<Attribute, float> P2_attr,
+                                sf::Color color);
 
     void draw_instance_complete(const Instance& instance);
     void draw_instance_clip(const Instance& instance);

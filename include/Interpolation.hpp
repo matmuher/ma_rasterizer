@@ -27,3 +27,15 @@ Dict<Attribute, AttributeValues> interpolate_attributes(
                                                         IntRange indep,
                                                         Dict<Attribute, FloatRange> dep
                                                         );
+
+
+Dict<Attribute, AttributeValues> interpolate_attributes(
+                                                        int indep_a,
+                                                        int indep_b,
+                                                        Dict<Attribute, float> dep_a,
+                                                        Dict<Attribute, float> dep_b
+                                                        );
+
+Dict<Attribute, FloatRange> create_range_dict(  const Dict<Attribute, float>& lhs,
+                                                const Dict<Attribute, float>& rhs);
+

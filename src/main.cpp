@@ -29,17 +29,28 @@ public:
 
     virtual void update_scene()
     {
-        static float t = 0;
+        // static float t = 0;
 
-        Instance cube1{updater, cube, 1, 0, {1, 0, 15}};
-        Instance cube2{updater, cube, 1, t, {3, 0, -15}};
+        // Instance cube1{updater, cube, 1, 0, {1, 0, 15}};
+        // Instance cube2{updater, cube, 1, t, {3, 0, -15}};
        
-        updater.update_all();
+        // updater.update_all();
 
-        draw_instance(cube1);
-        draw_instance(cube2);
+        // draw_instance(cube1);
+        // draw_instance(cube2);
 
-        t += 0.5;
+        info() << "WTF\n";
+        // rasterize_triangle( {10, 10}, {{"h", 0.2}}, 
+        //                     {100, 30}, {{"h", 1.0}},
+        //                     {20, 150}, {{"h", 0.0}},
+        //                     sf::Color::Red);
+
+        fill_triangle({10, 10}, 0.2, 
+                            {100, 30},  1.0,
+                            {20, 150}, 0.0,
+                            sf::Color::Red);
+
+        // t += 0.5;
     }
 };
 
@@ -59,29 +70,17 @@ int main(int argc, const char* argv[])
         }
     }
     
-    // TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, mode);
-    // test_rasterizer.render_scene();
+    TestRasterizer test_rasterizer(200, 200, 1, 1, 1, mode);
+    test_rasterizer.render_scene();
 
-    Dict<Attribute, AttributeValues> ret = 
-                            interpolate_attributes( {0, 3},
-                                                    {
-                                                    {"a", {0., 3.}}, 
-                                                    {"b", {1., 2.}},
-                                                    {"z", {-1., -2.}}
-                                                    }
-                                                    );
-
-    for (const auto& [attribute, attribute_values] : ret)
-    {
-        auto& outs = info();
-        outs << attribute << ": ";
-
-        for (float elem : attribute_values)
-        {
-            outs << elem << ' ';
-        }
-        outs << '\n';
-    }
+    // Dict<Attribute, AttributeValues> ret = 
+    //                         interpolate_attributes( {0, 3},
+    //                                                 {
+    //                                                 {"a", {0., 3.}}, 
+    //                                                 {"b", {1., 2.}},
+    //                                                 {"z", {-1., -2.}}
+    //                                                 }
+    //                                                 );
 
     return 0;
 }

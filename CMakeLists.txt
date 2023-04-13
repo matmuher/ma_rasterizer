@@ -3,7 +3,7 @@ project(MaRasterizer VERSION 0.1)
 
 find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
 
-add_compile_options(-Wall -Wextra -Wpedantic -g)
+add_compile_options(-Wall -Wextra -Wpedantic -g -std=c++2a)
 
 add_library(MaRasterizerLib
             src/MaRasterizer.cpp
