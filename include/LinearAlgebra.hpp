@@ -50,5 +50,7 @@ sf::Vector3f normalize(const sf::Vector3f& vec);
 
 bool is_equal(float lhs, float rhs);
 
+bool is_less(float lhs, float rhs);
+
 float deg2rad(float deg);
 

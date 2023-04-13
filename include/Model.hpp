@@ -6,10 +6,27 @@
 #include <Geometry.hpp>
 #include <Updater.hpp>
 
+// Triangle for VBO
 struct TriangleVertices
 {
     int a, b, c;
     sf::Color clr;
+};
+
+struct SceneTriangle
+{
+    sf::Vector3f a, b, c;
+    sf::Color clr;
+
+    SceneTriangle(  const sf::Vector3f& arg_a,
+                    const sf::Vector3f& arg_b,
+                    const sf::Vector3f& arg_c,
+                    const sf::Color& arg_clr)
+    :
+        a{arg_a},
+        b{arg_b},
+        c{arg_c},
+        clr{arg_clr} {}
 };
 
 // union of vertices and triangles
@@ -110,6 +127,8 @@ public:
 const Model& get_model() const { return m_model; }
 
 const Mat4f& get_instance_transform() const { return instance_transform; }
+
+float get_scale() const { return m_scale; }
 
 // [update]
 

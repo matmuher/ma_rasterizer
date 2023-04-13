@@ -47,3 +47,19 @@ sf::Vector3f transformToScene(  const Camera& camera,
                         transformed_homogeneous_point(1),
                         transformed_homogeneous_point(2)}; 
 }
+
+
+sf::Vector2i transformSceneToPixelArray(const Camera& camera,
+                                        const sf::Vector3f& point)
+{
+    Vec4f homogeneous_point{point.x, point.y, point.z, 1};
+
+    Vec3f transformed_homogeneous_point= camera.get_project_transform() * homogeneous_point;  
+
+    sf::Vector2f pixel_array_point_f = homogeneous_to_cartesian_2d( transformed_homogeneous_point(0),
+                                                                    transformed_homogeneous_point(1),
+                                                                    transformed_homogeneous_point(2));
+
+    return sf::Vector2i{int(pixel_array_point_f.x),
+                        int(pixel_array_point_f.y)}; 
+}

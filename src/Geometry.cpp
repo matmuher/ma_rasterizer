@@ -37,3 +37,15 @@ float compute_dist(const sf::Vector3f point, const Plane& plane)
 {
     return dot_product(point, plane.norm) - plane.d;
 }
+
+
+sf::Vector3f compute_intersect( const sf::Vector3f A,
+                                const Plane& plane,
+                                const sf::Vector3f B)
+{
+    float t = 0;
+
+    t = (plane.d - dot_product(A, plane.norm)) / dot_product(B - A, plane.norm);
+
+    return A + t * (B - A);
+}

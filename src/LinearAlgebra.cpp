@@ -1,9 +1,15 @@
 #include <LinearAlgebra.hpp>
 
+const float PRESICION = 0.0001;
+
 bool is_equal(float lhs, float rhs)
 {
-    const float PRESICION = 0.0001;
     return fabs(lhs - rhs) < PRESICION;    
+}
+
+bool is_less(float lhs, float rhs)
+{
+    return lhs < (rhs - PRESICION);    
 }
 
 Mat4f create_scale_matrix(float scale)

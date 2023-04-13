@@ -229,27 +229,30 @@ void MaRasterizer::draw_instance(const Instance& instance)
         return;
     }
 
-    std::vector<sf::Vector3f> updated_vertices = model.vertices;
-    for (auto& vertex : updated_vertices)
-    {
-        vertex = transformToScene(camera, instance, vertex);
-    }
-
     for (const auto& triangle : instance.get_model().triangles)
     {
-        draw_triangle(  transformCompletely(camera,
-                                            instance,
-                                            model.vertices[triangle.a]),
+        SceneTriangle striangle{transformToScene(camera, instance, model.vertices[triangle.a]),
+                                transformToScene(camera, instance, model.vertices[triangle.b]),
+                                transformToScene(camera, instance, model.vertices[triangle.c]),
+                                triangle.clr};
 
-                        transformCompletely(camera,
-                                            instance,
-                                            model.vertices[triangle.b]),
+        std::vector<SceneTriangle> clipped_triangles = clip_triangle(   camera.get_fov_planes(),
+                                                                        striangle);
+        
+        for (const auto& clipped_triangle : clipped_triangles)
+        {
 
-                        transformCompletely(camera,
-                                            instance,
-                                            model.vertices[triangle.c]),
-                        
-                        triangle.clr);
+            draw_triangle(  transformSceneToPixelArray( camera,
+                                                        clipped_triangle.a),
+
+                            transformSceneToPixelArray( camera,
+                                                        clipped_triangle.b),
+
+                            transformSceneToPixelArray( camera,
+                                                        clipped_triangle.c),
+                            
+                            triangle.clr);
+        }
     }
 }
 

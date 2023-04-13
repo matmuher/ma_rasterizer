@@ -23,3 +23,6 @@ sf::Vector2i transformCompletely(   const Camera& camera,
 sf::Vector3f transformToScene(  const Camera& camera,
                                 const Instance& instance,
                                 const sf::Vector3f& point);
+
+sf::Vector2i transformSceneToPixelArray(const Camera& camera,
+                                        const sf::Vector3f& point);

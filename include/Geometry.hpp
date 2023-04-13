@@ -19,3 +19,7 @@ struct Plane
 };
 
 float compute_dist(const sf::Vector3f point, const Plane& plane);
+
+sf::Vector3f compute_intersect( const sf::Vector3f A,
+                                const Plane& plane,
+                                const sf::Vector3f B);
