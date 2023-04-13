@@ -5,6 +5,7 @@
 
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
+#include <Interpolation.hpp>
 
 class TestRasterizer : public MaRasterizer
 {
@@ -31,7 +32,7 @@ public:
         static float t = 0;
 
         Instance cube1{updater, cube, 1, 0, {1, 0, 15}};
-        Instance cube2{updater, cube, 1, t, {6, 0, -15}};
+        Instance cube2{updater, cube, 1, t, {3, 0, -15}};
        
         updater.update_all();
 
@@ -58,8 +59,27 @@ int main(int argc, const char* argv[])
         }
     }
     
-    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, mode);
-    test_rasterizer.render_scene();
+    // TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, mode);
+    // test_rasterizer.render_scene();
+
+    std::vector<attribute_values> ret = 
+                            interpolate_attributes( {0, 3}, 
+                                                    {
+                                                        {0., 3.}, 
+                                                        {1., 2.},
+                                                        {-1., -2.}
+                                                    }
+                                                    );
+
+    for (const auto& attribute_values : ret)
+    {
+        auto& outs = info();
+        for (float elem : attribute_values)
+        {
+            outs << elem << ' ';
+        }
+        outs << '\n';
+    }
 
     return 0;
 }

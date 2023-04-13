@@ -25,6 +25,13 @@ MaRasterizer::MaRasterizer( int Width, int Height,
                 }
 {
     image.create(camera.get_width(), camera.get_height(), sf::Color::White);
+    
+    z_buffer.reserve(camera.get_height());
+    for (int y = 0; y < camera.get_height(); ++y)
+    {
+        std::vector<float> row(camera.get_width(), INFINITY);
+        z_buffer.push_back(std::move(row));
+    }
 
     camera.update();
 

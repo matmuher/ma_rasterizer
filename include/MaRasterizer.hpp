@@ -34,9 +34,12 @@ private:
 
 // [implementation details]
 
+    using Matrix2f = std::vector<std::vector<float>>;
+
     mutable sf::RenderWindow window;
 
     sf::Image image;
+    Matrix2f z_buffer;
 
     const std::string file_name = "querida_triangulo.png"; 
 
