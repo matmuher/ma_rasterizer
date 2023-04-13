@@ -4,7 +4,14 @@
 #include <Camera.hpp>
 #include <Model.hpp>
 
-bool is_bounding_sphere_out_of_fov( const Camera& camera,
+enum class IntersectStatus
+{
+    OUT,
+    IN,
+    INTERSECT
+};
+
+IntersectStatus is_bounding_sphere_intersect_fov( const Camera& camera,
                             const Instance& instance);
 
 std::vector<TriangleVertices> clip_instance(const Camera& camera,

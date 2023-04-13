@@ -62,6 +62,8 @@ public:
                         sf::Vector2i P2, float h2,
                         sf::Color color);
 
+    void draw_instance_complete(const Instance& instance);
+    void draw_instance_clip(const Instance& instance);
     void draw_instance(const Instance& instance);
 
 // [SCENE MANAGING]

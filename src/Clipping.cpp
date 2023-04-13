@@ -3,7 +3,7 @@
 #include <LinearAlgebra.hpp>
 #include <Geometry.hpp>
 
-bool is_bounding_sphere_out_of_fov( const Camera& camera,
+IntersectStatus is_bounding_sphere_intersect_fov( const Camera& camera,
                                     const Instance& instance)
 {
     Sphere bounding_sphere = instance.get_model().bounding_sphere;
@@ -14,19 +14,32 @@ bool is_bounding_sphere_out_of_fov( const Camera& camera,
 
     const std::vector<Plane>& fov_planes = camera.get_fov_planes();
 
-    float dist = 0;
+    float dist = INFINITY;
     for (const auto& plane : fov_planes)
     {
         dist = std::min(compute_dist(updated_center, plane), dist);
     }
 
+    info() << dist << '\n';
+
     if (dist < (-bounding_sphere.R * instance.get_scale()))
     {
-        info() << "instance is out of view field: " << dist << '\n';
-        return true;
+        info() << "instance OUT fov\n";
+        return IntersectStatus::OUT;
+    }
+    else if (dist > (bounding_sphere.R * instance.get_scale()))
+    {
+        info() << "instance IN fov\n";
+        return IntersectStatus::IN;
+    }
+    else
+    {
+        info() << "instance INTERSECT fov\n";
+        return IntersectStatus::INTERSECT;   
     }
 
-    return false;
+    info() << "cant't determine how instance is placed relative to fov planes\n";
+    return IntersectStatus::OUT;
 }
 
 // TODO too big function!!!
@@ -123,9 +136,14 @@ std::vector<SceneTriangle> clip_triangle(   const std::vector<Plane>& fov_planes
                 break;
             }
 
+        case 3:
+            
+            clipped_triangles.clear();
+            break;
+
         default:
 
-            info() << "Invalide number of out of fov points\n";
+            info() << "Invalid number of out of fov points: " << out_fov_num << '\n';
     } 
 
     clipped_triangles.shrink_to_fit();

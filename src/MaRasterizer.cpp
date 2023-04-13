@@ -220,39 +220,78 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
     }
 }
 
-void MaRasterizer::draw_instance(const Instance& instance)
+void MaRasterizer::draw_instance_clip(const Instance& instance)
 {
     const Model& model = instance.get_model();
 
-    if (is_bounding_sphere_out_of_fov(camera, instance))
-    {
-        return;
-    }
-
-    for (const auto& triangle : instance.get_model().triangles)
-    {
-        SceneTriangle striangle{transformToScene(camera, instance, model.vertices[triangle.a]),
-                                transformToScene(camera, instance, model.vertices[triangle.b]),
-                                transformToScene(camera, instance, model.vertices[triangle.c]),
-                                triangle.clr};
-
-        std::vector<SceneTriangle> clipped_triangles = clip_triangle(   camera.get_fov_planes(),
-                                                                        striangle);
-        
-        for (const auto& clipped_triangle : clipped_triangles)
+    for (const auto& triangle : model.triangles)
         {
+            SceneTriangle striangle{transformToScene(camera, instance, model.vertices[triangle.a]),
+                                    transformToScene(camera, instance, model.vertices[triangle.b]),
+                                    transformToScene(camera, instance, model.vertices[triangle.c]),
+                                    triangle.clr};
 
-            draw_triangle(  transformSceneToPixelArray( camera,
-                                                        clipped_triangle.a),
+            std::vector<SceneTriangle> clipped_triangles = clip_triangle(   camera.get_fov_planes(),
+                                                                            striangle);
+            
+            for (const auto& clipped_triangle : clipped_triangles)
+            {
 
-                            transformSceneToPixelArray( camera,
-                                                        clipped_triangle.b),
+                draw_triangle(  transformSceneToPixelArray( camera,
+                                                            clipped_triangle.a),
 
-                            transformSceneToPixelArray( camera,
-                                                        clipped_triangle.c),
+                                transformSceneToPixelArray( camera,
+                                                            clipped_triangle.b),
+
+                                transformSceneToPixelArray( camera,
+                                                            clipped_triangle.c),
+                                
+                                triangle.clr);
+            }
+        }
+}
+
+
+void MaRasterizer::draw_instance_complete(const Instance& instance)
+{
+    const Model& model = instance.get_model();
+
+    for (const auto& triangle : model.triangles)
+        {
+            draw_triangle(  transformCompletely(camera,
+                                                instance,
+                                                model.vertices[triangle.a]),
+
+                            transformCompletely(camera,
+                                                instance,
+                                                model.vertices[triangle.b]),
+
+                            transformCompletely(camera,
+                                                instance,
+                                                model.vertices[triangle.c]),
                             
                             triangle.clr);
         }
+}
+
+void MaRasterizer::draw_instance(const Instance& instance)
+{
+    IntersectStatus intersect_status = is_bounding_sphere_intersect_fov(camera, instance);
+
+    if (intersect_status == IntersectStatus::OUT)
+    {
+        info() << "Draw not\n";
+        return;
+    }    
+    else if (intersect_status == IntersectStatus::IN)
+    {
+        info() << "Draw completely\n";
+        draw_instance_complete(instance);
+    }
+    else if (intersect_status == IntersectStatus::INTERSECT)
+    {
+        info() << "Draw clipped\n";
+        draw_instance_clip(instance);
     }
 }
 
