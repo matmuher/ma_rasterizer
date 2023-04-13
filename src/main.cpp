@@ -42,10 +42,23 @@ public:
     }
 };
 
-int main()
+int main(int argc, const char* argv[])
 {
-    // TODO add enum for render mode
-    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, RenderMode::Picture);
+    RenderMode mode = RenderMode::Picture;
+
+    if (argc > 1)
+    {
+        if (strcmp(argv[1], "-w") == 0)
+        {
+            mode = RenderMode::Window;
+        }
+        else if (strcmp(argv[1], "-p") == 0)
+        {
+            mode = RenderMode::Picture;
+        }
+    }
+    
+    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, mode);
     test_rasterizer.render_scene();
 
     return 0;

@@ -4,6 +4,14 @@
 #include <Camera.hpp>
 #include <Model.hpp>
 
+/*
+    Clipping is trivial.
+    Consdier intersection only with the only - first intersected plane.
+    
+    I think it's not critical as it's only a technical issue
+    to catch all intersections and pop right number of trinagles.
+*/
+
 enum class IntersectStatus
 {
     OUT,
