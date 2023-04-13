@@ -38,6 +38,10 @@ Solution - for  almost vertical lines use x=f(y) approximation(details in [src/M
 
 ### II. 3D projecting
 
+
+![](pictures/project_cube.png)
+
+
     1. Convertion functions:
         * From canvas --to--> pixel array
         * From view port --to--> canvas
@@ -75,28 +79,22 @@ Solution - for  almost vertical lines use x=f(y) approximation(details in [src/M
         * project vertex from Scene to ViewPort
         * connect vertex on ViewPort to form Scene's proejction
 
-![](pictures/project_cube.png)
-
 ### III. Describe scene
+
+
+![](pictures/two_cubes.png)
 
 1. Draw model as array of vertexes and triangles:
 
 * Array of 3D points with names (vector is enough)
 * Array of triangles (3 points' names)
 
-![](pictures/trivial_cube.png)
-
 2. Make instances that that use common model
 
-![](pictures/two_cubes.png)
 
 3. Transform instance (scale + rotate)
 
-![](pictures/transormed_cubes.png)
-
 4. Transform Camera (rotate + translation)
-
-![](pictures/camera_transformation.png)
 
 5. Make transformations homogeneous (check homogeneous coordinates)
 
@@ -121,7 +119,7 @@ In program we have a series of transformations, to be exact:
 
 ![](pictures/complex_movement.gif)
 
-### IV. Clipping [@currently here]
+### IV. Clipping
 
 Remove from scene objects that are out of camera
 
@@ -137,9 +135,11 @@ Remove from scene objects that are out of camera
    be divided into triangles, that completely in or
    completely out of view field
 
-### V. Remove hidden surface
+### V. Culling and remove hidden surfaces [@currently here]
 
 Remove surfaces that are behind other surfaces in camera view
+
+![](pictures/hidden_surfaces.png)
 
 ### VI. Shading
 

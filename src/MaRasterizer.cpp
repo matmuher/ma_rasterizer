@@ -258,15 +258,27 @@ void MaRasterizer::draw_instance_clip(const Instance& instance)
             
             for (const auto& clipped_triangle : clipped_triangles)
             {
-                draw_triangle(  transformSceneToPixelArray( camera,
+                rasterize_triangle( { 
+                                    transformSceneToPixelArray( camera,
                                                             clipped_triangle.a),
+                                    {{"z", -1 / clipped_triangle.a.z},
+                                     {"h", 1.}}
+                                    },
 
-                                transformSceneToPixelArray( camera,
+                                    { 
+                                    transformSceneToPixelArray( camera,
                                                             clipped_triangle.b),
+                                    {{"z", -1 / clipped_triangle.b.z},
+                                     {"h", 1.}}
+                                    },
 
-                                transformSceneToPixelArray( camera,
+                                    { 
+                                    transformSceneToPixelArray( camera,
                                                             clipped_triangle.c),
-                                
+                                    {{"z", -1 / clipped_triangle.c.z},
+                                     {"h", 1.}}
+                                    },
+
                                 triangle.clr);
             }
         }
@@ -307,7 +319,7 @@ void MaRasterizer::draw_instance(const Instance& instance)
     else if (intersect_status == IntersectStatus::IN)
     {
         info() << "Draw completely\n";
-        draw_instance_complete(instance);
+        draw_instance_clip(instance);
     }
     else if (intersect_status == IntersectStatus::INTERSECT)
     {

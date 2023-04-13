@@ -235,8 +235,6 @@ void MaRasterizer::rasterize_triangle(
 
     for (int y_walker = P0.y; y_walker < P2.y; ++y_walker)
     {
-        info() << "YWalker: " << y_walker << '\n';
-
         int y_shift = y_walker - P0.y;
 
         int x_l = attr_left["x"][y_shift];
