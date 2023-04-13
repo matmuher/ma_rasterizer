@@ -24,6 +24,12 @@ protected:
 
     Camera camera;
 
+// [interactive]
+
+    const float StdRotateAngle = 1.0;
+
+    const float StdShiftLen = 0.2;
+
 private:
 
 // [implementation details]
@@ -33,6 +39,8 @@ private:
     sf::Image image;
 
     const std::string file_name = "querida_triangulo.png"; 
+
+    RenderMode mode;
 
 public:
 
@@ -67,6 +75,8 @@ public:
     void draw_instance(const Instance& instance);
 
 // [SCENE MANAGING]
+
+    void process_key(sf::Keyboard::Key key);
 
     void clear_scene();
 

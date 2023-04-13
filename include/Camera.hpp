@@ -81,6 +81,10 @@ public:
 
     void set_position(const sf::Vector3f& vec);
 
+    void change_rotation(float angle);
+
+    void change_position(const sf::Vector3f& vec);
+
 // [getters]
 
     const Mat4f& get_camera_transform() const; 
@@ -94,6 +98,8 @@ public:
     float get_vp_width() const;
     float get_vp_height() const;
     float get_vp_dist() const;
+
+    float get_angle() const;
 
     const std::vector<Plane>& get_fov_planes() const;
 

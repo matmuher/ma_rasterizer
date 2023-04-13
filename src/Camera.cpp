@@ -38,11 +38,21 @@ void Camera::set_rotation(float angle)
     need_update();
 }
 
+void Camera::change_rotation(float angle)
+{
+    set_rotation(angle + m_angle);
+}
+
 void Camera::set_position(const sf::Vector3f& position)
 {
     is_camera_transform_outdated = true;
     m_position = position;
     need_update();
+}
+
+void Camera::change_position(const sf::Vector3f& position)
+{
+    set_position(m_position + position);
 }
 
 // [getters]
@@ -80,6 +90,11 @@ float Camera::get_vp_height() const
 float Camera::get_vp_dist() const
 {
     return m_ViewPortDistance;
+}
+
+float Camera::get_angle() const
+{
+    return m_angle;
 }
 
 const std::vector<Plane>& Camera::get_fov_planes() const

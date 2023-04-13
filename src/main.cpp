@@ -45,11 +45,11 @@ public:
 int main()
 {
     // TODO add enum for render mode
-    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, RenderMode::Picture);
+    TestRasterizer test_rasterizer(1000, 1000, 1, 1, 1, RenderMode::Window);
 
-    test_rasterizer.update_scene();
-    test_rasterizer.save_scene();
-    // test_rasterizer.render_scene();
+    // test_rasterizer.update_scene();
+    // test_rasterizer.save_scene();
+    test_rasterizer.render_scene();
 
     return 0;
 }

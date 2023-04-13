@@ -16,7 +16,8 @@ add_library(MaRasterizerLib
             src/Updater.cpp
             src/Clipping.cpp
             src/LinearAlgebra.cpp
-            src/Geometry.cpp)
+            src/Geometry.cpp
+            src/SceneManage.cpp)
 
 target_link_libraries(MaRasterizerLib sfml-graphics sfml-window sfml-system)
 target_include_directories(MaRasterizerLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
