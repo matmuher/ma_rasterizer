@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <MaRasterizer.hpp>
 #include <Debug.hpp>
+#include <Clipping.hpp>
 
 // [CTOR]
 
@@ -253,17 +254,6 @@ void MaRasterizer::fill_triangle(sf::Vector2i P0, sf::Vector2i P1,
         info() << "xs: " << x1 << ' ' << x2 << '\n';
 
         draw_line({x1, y_walker}, {x2, y_walker}, color);
-    }
-}
-
-void MaRasterizer::draw_model(const Model& model)
-{
-    for (const auto& triangle : model.triangles)
-    {
-        draw_triangle(  ProjectOnPixel(model.vertices[triangle.a]),
-                        ProjectOnPixel(model.vertices[triangle.b]),
-                        ProjectOnPixel(model.vertices[triangle.c]),
-                        triangle.clr);
     }
 }
 

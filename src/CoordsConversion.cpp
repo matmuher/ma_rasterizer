@@ -19,24 +19,3 @@ sf::Vector3f map_to_scene(  const Camera& camera,
                                 instance_transform,
                                 point);    
 }
-
-sf::Vector2i MaRasterizer::CanvasToPixel(const sf::Vector2i& cnvs_pnt) const
-{
-    return sf::Vector2i {
-                        camera.get_width()  / 2 + cnvs_pnt.x,
-                        camera.get_height() / 2 - cnvs_pnt.y
-                        };
-}
-
-sf::Vector2i MaRasterizer::ViewPortToCanvas(const sf::Vector2f& view_port_pnt) const
-{
-    return sf::Vector2i {
-                        int(view_port_pnt.x / camera.get_vp_width() * camera.get_width()),
-                        int(view_port_pnt.y / camera.get_vp_height() * camera.get_height())
-                        };
-}
-
-sf::Vector2i MaRasterizer::ViewPortToPixel(const sf::Vector2f& view_port_pnt) const
-{
-    return CanvasToPixel(ViewPortToCanvas(view_port_pnt));
-}

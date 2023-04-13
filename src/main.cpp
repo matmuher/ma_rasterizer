@@ -28,8 +28,8 @@ public:
 
     virtual void update_scene()
     {
-        Instance cube1{updater, cube, 1, 0, {4, 0, 15}};
-        Instance cube2{updater, cube, 2, 0, {4, 0, -15}};
+        Instance cube1{updater, cube, 1, 0, {15, 0, 15}};
+        Instance cube2{updater, cube, 2, 0, {9, 0, -15}};
        
         updater.update_all();
 
